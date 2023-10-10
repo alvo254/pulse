@@ -1,0 +1,197 @@
+{
+  "main": {
+    "id": "8d8a3fc021f8d18a",
+    "type": "split",
+    "children": [
+      {
+        "id": "56bdd0d46a39ba23",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "87e396c775fe4423",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "3. Conceptual Solution Overview/3.1 Conceptual and Logical architecture.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "a4e9d4a748e2863a",
+    "type": "split",
+    "children": [
+      {
+        "id": "7c2f1eeb7fcb1e1b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2ab23ab93c0b4d62",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "9999e4b7f870a490",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "a9891868f7f772ca",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "bc1729932f1c3f2e",
+    "type": "split",
+    "children": [
+      {
+        "id": "436b7e095671d58b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7d4609fc2d143bef",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "3. Conceptual Solution Overview/3.1 Conceptual and Logical architecture.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "e5b4a69c4a624cb3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "3. Conceptual Solution Overview/3.1 Conceptual and Logical architecture.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "306bf1d92d4f2741",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "9c79cbc1c6c73be7",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "3. Conceptual Solution Overview/3.1 Conceptual and Logical architecture.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "87e396c775fe4423",
+  "lastOpenFiles": [
+    "7. Solution Management/7.1 Operational Management.md",
+    "1. Solution overview/1.1 Problem statement.md",
+    "1. Solution overview/1.5 Solution Constraints.md",
+    "1. Solution overview/1.6 Key Architecture Decisions.md",
+    "2. Business Context/2.3 Non-Functional Requirements.md",
+    "2. Business Context/2.2 Business Requirements.md",
+    "2. Business Context/2.1 Business Capabilities.md",
+    "3. Conceptual Solution Overview/3.1 Conceptual and Logical architecture.md",
+    "4. Solution Architecture/4.1 Application Architecture.md",
+    "Table of Contents.md",
+    "4. Solution Architecture/4.5 Security Architecture.md",
+    "4. Solution Architecture/4.3 Integration Architecture.md",
+    "5. Solution Implementation/5.4 Migration.md",
+    "5. Solution Implementation/5.3 Data Migration.md",
+    "5. Solution Implementation/5.2 Deployment.md",
+    "5. Solution Implementation/5.1 Development.md",
+    "4. Solution Architecture/4.4 Infrastructure Architect.md",
+    "4. Solution Architecture/4.2 Data Architecture.md",
+    "7. Solution Management/7.2 Monitoring and Alerting.md",
+    "Screenshot 2023-10-10 163051.png",
+    "Screenshot 2023-10-10 162654.png",
+    "Screenshot 2023-10-10 162458.png",
+    "Screenshot 2023-10-10 161801.png",
+    "Screenshot 2023-10-10 161520.png",
+    "7. Solution Management/7.4 Disaster Recovery.md",
+    "1. Solution overview/1.2 Solution Purpose.md",
+    "7. Solution Management/7.3 Support and Incident Management.md",
+    "6. Cost optimization/Calculating TCO.md",
+    "1. Solution overview/1.4 Solution Assumptions.md",
+    "1. Solution overview/1.3 Solution Scope.md",
+    "Q&A.md",
+    "Screenshot 2023-10-09 085155.png",
+    "Screenshot 2023-10-09 113857.png",
+    "Screenshot 2023-10-09 113554.png",
+    "Screenshot 2023-10-09 111841.png",
+    "Screenshot 2023-10-09 110954.png",
+    "6. Cost optimization",
+    "6. Solution Management/6.2 Monitoring and Alert",
+    "8. Proof of concept findings",
+    "7. Solution Management",
+    "5. Solution Implementation",
+    "4. Solution Architecture",
+    "3. Conceptual Solution Overview",
+    "2. Business Context",
+    "1. Solution overview"
+  ]
+}
