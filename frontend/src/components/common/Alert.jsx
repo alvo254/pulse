@@ -13,11 +13,11 @@ const Alert = ({ type, title, message, isOpen, setIsOpen }) => {
 				>
 					<div className='flex justify-between items-center'>
 						<div className='w-full mr-3 flex gap-x-[20px] items-center'>
-							<img
+							{/* <img
 								src='/images/icons/markbg.png'
 								className='w-[20px] h-[20px] rounded-full'
 								alt='mark bg'
-							/>
+							/> */}
 							<div className='w-[80%] flex flex-col items-center'>
 								<h2 className='font-[600] text-[16px] capitalize text-center text-[#202223] leading-5'>
 									{title}
