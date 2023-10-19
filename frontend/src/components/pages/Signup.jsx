@@ -13,7 +13,6 @@ import Alert from '@/components/common/Alert';
 import ButtonLoader from '@/components/loaders/ButtonLoader';
 import Logo from '../common/Logo';
 import AccountState, { useAccountContext } from '@/state/AccountState';
-import AccountContext from '@/state/AccountState';
 // import withLogoutAuth from 'components/auth/withLogoutAuth';
 
 const Signup = () => {
