@@ -6,7 +6,9 @@ import { useRouter } from 'next/router';
 // import { signIn } from 'next-auth/react';
 // import { useSession } from 'next-auth/react';
 import Alert from '@/components/common/Alert';
-import Meta from '@/components/common/Meta';
+import { AiOutlineMail } from 'react-icons/ai';
+import { RiLockPasswordFill } from 'react-icons/ri';
+// import Meta from '@/components/common/Meta';
 // import withLogoutAuth from 'components/auth/withLogoutAuth';
 
 const Signin = () => {
@@ -78,17 +80,17 @@ const Signin = () => {
 	const handleSubmit = () => {};
 	return (
 		<>
-			<Meta title='Sign in | Social Jar' />
+			{/* <Meta title='Sign in | Social Jar' /> */}
 
 			<div className='bg-[#1d171a] py-[20px] min-h-[100vh]'>
 				<div className='flex flex-col items-center justify-center'>
-					<Link href='/'>
+					{/* <Link href='/'>
 						<img
 							src='/images/logo.png'
 							alt='devcent logo'
 							className='mb-[18px]'
 						/>
-					</Link>
+					</Link> */}
 					<div className='bg-white text-black w-[90%] sm:w-[70%] md:w-[448px] rounded-lg relative'>
 						{isOpen && (
 							<Alert
@@ -128,18 +130,16 @@ const Signin = () => {
 										Email
 									</label>
 									<div className='dark:text-gray-200  dark:hover:text-white flex mx-auto w-full md:w-[379px] h-[45px] pl-[16px] items-center border border-[#cfcfcf] bg-white rounded-lg mt-[3px]'>
-										<img
-											src='/images/icons/email.png'
-											alt='email'
-										/>
+										<AiOutlineMail />
 										<input
-											type='text'
+											type='email'
 											className='p-2 bg-white outline-none w-[100%] text-[16px] rounded-r-lg border-none text-black'
 											onChange={(e) =>
 												setEmail(e.target.value)
 											}
 											name={email}
 											value={email}
+											required
 										/>
 									</div>
 								</div>
@@ -151,10 +151,7 @@ const Signin = () => {
 										Password
 									</label>
 									<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white flex mx-auto w-full md:w-[379px] h-[45px] pl-[16px] items-center border border-[#cfcfcf] bg-transparent rounded-lg mt-[3px]'>
-										<img
-											src='/images/icons/password.png'
-											alt='password'
-										/>
+										<RiLockPasswordFill />
 										<input
 											type='password'
 											className='p-2 bg-transparent outline-none active:bg-transparent placeholder:bg-transparent fill-transparent w-[100%] text-[16px] rounded-r-lg border-none text-black'
@@ -164,6 +161,7 @@ const Signin = () => {
 											}
 											name={password}
 											value={password}
+											required
 										/>
 									</div>
 								</div>

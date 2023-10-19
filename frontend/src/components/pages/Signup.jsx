@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { AiOutlineMail } from 'react-icons/ai';
 import { FaUserAlt } from 'react-icons/fa';
 import { RiLockPasswordFill } from 'react-icons/ri';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 // import { useSession } from 'next-auth/react';
 import Alert from '@/components/common/Alert';
 // import Meta from '@/components/common/Meta';
@@ -16,6 +16,7 @@ import AccountState, { useAccountContext } from '@/state/AccountState';
 // import withLogoutAuth from 'components/auth/withLogoutAuth';
 
 const Signup = () => {
+	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -47,6 +48,11 @@ const Signup = () => {
 				setEmail('');
 				setUsername('');
 				setPassword('');
+				router.push('/verify-account');
+				// router.push({
+				// 	pathname: '/verify-account',
+				// 	query: { email },
+				// });
 			})
 			.catch((err) => {
 				console.log('error', err, regMessage);
