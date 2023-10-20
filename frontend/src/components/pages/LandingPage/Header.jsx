@@ -35,7 +35,7 @@ const Header = () => {
 
 		</div>
 
-<div class="container flex ml-8 mr-10 mt-12 mb-12">
+<div class="container gap-4 flex ml-8 mr-10 mt-12 mb-12">
 		<div className=' w-1/3 justify-center text-center'>
      <h1 class='mb-4 text-slate-700 font-[600] text-[1.5rem] leading-normal hover:text-slate-800'>Descriptive Analytics</h1>
 		 <Image className='width:15%; margin:20px 20px 50px;'
