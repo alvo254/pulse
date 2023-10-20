@@ -25,6 +25,7 @@ const Signup = () => {
 		title: '',
 		content: '',
 	});
+	const { signup, regMessage, getSession } = useAccountContext();
 	const [isOpen, setIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	useEffect(() => {
@@ -34,8 +35,17 @@ const Signup = () => {
 			}, 5000);
 		}
 	}, [isOpen]);
+	useEffect(() => {
+		getSession()
+			.then((session) => {
+				console.log(session);
+				router.push('/overview');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 	// const { signup } = useContext(AccountContext);
-	const { signup, regMessage } = useAccountContext();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!email || !username || !password) {
@@ -44,7 +54,7 @@ const Signup = () => {
 			.then((data) => {
 				console.log('registration succesful', data);
 				setIsOpen(true);
-				setMessage({ type: 'success', content: regMessage });
+				// setMessage({ type: 'success', content: regMessage });
 				setEmail('');
 				setUsername('');
 				setPassword('');
@@ -55,9 +65,9 @@ const Signup = () => {
 				// });
 			})
 			.catch((err) => {
-				console.log('error', err, regMessage);
+				console.log('error', err.message);
 				setIsOpen(true);
-				setMessage({ type: 'error', content: regMessage });
+				setMessage({ type: 'error', content: err.message });
 			});
 	};
 	return (
