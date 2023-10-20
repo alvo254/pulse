@@ -2,4 +2,4 @@
 /frontend/node_modules
 .env
 /frontend/.next
-.vscode
+/frontend/.env
