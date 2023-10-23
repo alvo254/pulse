@@ -3,3 +3,6 @@
 .env
 /frontend/.next
 .vscode
+SAD/.trash
+__pycache__
+/frontend/.env
