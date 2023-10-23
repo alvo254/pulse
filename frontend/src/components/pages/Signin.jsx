@@ -2,18 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import GoogleButton from '@/components/common/GoogleButton';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-// import { signIn } from 'next-auth/react';
-// import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import Alert from '@/components/common/Alert';
-import Meta from '@/components/common/Meta';
-// import withLogoutAuth from 'components/auth/withLogoutAuth';
-
+import { AiOutlineMail } from 'react-icons/ai';
+import { RiLockPasswordFill } from 'react-icons/ri';
+import { useAccountContext } from '@/state/AccountState';
 const Signin = () => {
-	// const { status } = useSession();
-	// const router = useRouter();
-	// const { redirect } = router.query;
-
+	const { authenticate, getSession, userAttributes } = useAccountContext();
+	const router = useRouter();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [message, setMessage] = useState({
@@ -24,71 +20,74 @@ const Signin = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	// React.useEffect(() => {
-	// 	window.scrollTo(0, 0);
+	useEffect(() => {
+		getSession()
+			.then((session) => {
+				console.log(session);
+				router.push('/overview');
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+	// useEffect(() => {
+	// 	userAttributes()
+	// 		.then((user) => {
+	// 			console.log('loggedin user ', user);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 		});
 	// }, []);
 
-	// const handleSubmit = async (e) => {
-	// 	e.preventDefault();
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 
-	// 	if (!email || !password) return;
-	// 	setIsLoading(true);
+		if (!email || !password) return;
+		setIsLoading(true);
 
-	// 	try {
-	// 		const result = await signIn('credentials', {
-	// 			email: email,
-	// 			password: password,
-	// 			redirect: false,
-	// 		});
+		authenticate(email, password)
+			.then((data) => {
+				console.log('success', data);
+				router.replace('/overview');
+			})
+			.catch((err) => {
+				console.log('error login in', err.message);
+				// if (
+				// 	err ===
+				// 	'NotAuthorizedException: Incorrect username or password.'
+				// ) {
+				setMessage({
+					type: 'error',
+					// title: 'Account is not activated',
+					content: err.message,
+				});
+				setIsOpen(true);
+				// }
+			})
+			.finally(() => {
+				setIsLoading(false);
+			});
+	};
 
-	// 		if (result.ok === true) {
-	// 			router.replace('/user/overview' || redirect);
-	// 		} else {
-	// 			if (result.error === 'activate') {
-	// 				setMessage({
-	// 					type: 'error',
-	// 					title: 'Account is not activated',
-	// 					content:
-	// 						'You need to activate before log in. A link to activate your account has been sent to your email Address',
-	// 				});
-	// 				setIsOpen(true);
-	// 			} else {
-	// 				setMessage({
-	// 					type: 'error',
-	// 					title: 'Sign in error',
-	// 					content: result.error,
-	// 				});
-	// 				setIsOpen(true);
-	// 			}
-	// 		}
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	} finally {
-	// 		setIsLoading(false);
-	// 		setEmail('');
-	// 		setPassword('');
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	setTimeout(() => {
-	// 		setIsOpen(false);
-	// 	}, 10000);
-	// }, [isOpen]);
-	const handleSubmit = () => {};
+	useEffect(() => {
+		setTimeout(() => {
+			setIsOpen(false);
+		}, 10000);
+	}, [isOpen]);
 	return (
 		<>
-			<Meta title='Sign in | Social Jar' />
+			{/* <Meta title='Sign in | Social Jar' /> */}
 
 			<div className='bg-[#1d171a] py-[20px] min-h-[100vh]'>
 				<div className='flex flex-col items-center justify-center'>
-					<Link href='/'>
+					{/* <Link href='/'>
 						<img
 							src='/images/logo.png'
 							alt='devcent logo'
 							className='mb-[18px]'
 						/>
-					</Link>
+					</Link> */}
 					<div className='bg-white text-black w-[90%] sm:w-[70%] md:w-[448px] rounded-lg relative'>
 						{isOpen && (
 							<Alert
@@ -128,18 +127,16 @@ const Signin = () => {
 										Email
 									</label>
 									<div className='dark:text-gray-200  dark:hover:text-white flex mx-auto w-full md:w-[379px] h-[45px] pl-[16px] items-center border border-[#cfcfcf] bg-white rounded-lg mt-[3px]'>
-										<img
-											src='/images/icons/email.png'
-											alt='email'
-										/>
+										<AiOutlineMail />
 										<input
-											type='text'
+											type='email'
 											className='p-2 bg-white outline-none w-[100%] text-[16px] rounded-r-lg border-none text-black'
 											onChange={(e) =>
 												setEmail(e.target.value)
 											}
 											name={email}
 											value={email}
+											required
 										/>
 									</div>
 								</div>
@@ -151,10 +148,7 @@ const Signin = () => {
 										Password
 									</label>
 									<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white flex mx-auto w-full md:w-[379px] h-[45px] pl-[16px] items-center border border-[#cfcfcf] bg-transparent rounded-lg mt-[3px]'>
-										<img
-											src='/images/icons/password.png'
-											alt='password'
-										/>
+										<RiLockPasswordFill />
 										<input
 											type='password'
 											className='p-2 bg-transparent outline-none active:bg-transparent placeholder:bg-transparent fill-transparent w-[100%] text-[16px] rounded-r-lg border-none text-black'
@@ -164,6 +158,7 @@ const Signin = () => {
 											}
 											name={password}
 											value={password}
+											required
 										/>
 									</div>
 								</div>
