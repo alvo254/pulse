@@ -1,3 +1,13 @@
 .obsidian/
-frontend/node_modules
+/frontend/node_modules
 .env
+/frontend/.next
+.vscode
+SAD/.trash
+__pycache__
+/frontend/.env
+.terraform/
+terraform.tfstate
+pulse-key.pem
+terraform.tfstate.backup
+.terraform.lock.hcl
