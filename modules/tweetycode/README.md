@@ -15,6 +15,8 @@ To run the commands below successfully make sure you are in the tweetycode direc
 Run the commands below to package and provision the lambda function, add python layer to it and also attach an eventbridge rule to the lambda function.
 The complete code for the lambda function is in the [lambda](./lambda/) directory
 
+- https://repost.aws/knowledge-center/lambda-import-module-error-python
+
 ```sh
 chmod u+x setup_infra.sh
 ./setup_infra.sh tweets-pull-s3-609806490186
@@ -26,3 +28,9 @@ To clean the provision resources after testing, run the commands below. This del
 chmod u+x tear_down_infra.sh
 ./tear_down_infra.sh tweets-pull-s3-609806490186
 ```
+
+## Terraform Equivalent (Not Tested Yet)
+I have also included a terraform equivalent of the above though not tested yet.
+It needs some changes, there are some code traps in some files.
+
+Reference it [here](./terraform/)
