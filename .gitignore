@@ -3,3 +3,13 @@
 .env
 /frontend/.next
 .vscode
+SAD/.trash
+__pycache__
+/frontend/.env
+.terraform/
+terraform.tfstate
+pulse-key.pem
+terraform.tfstate.backup
+.terraform.lock.hcl
+node_modules/
+.terraform.tfstate.lock.info
