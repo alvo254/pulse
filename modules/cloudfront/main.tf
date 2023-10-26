@@ -50,3 +50,4 @@ tags = {
     Environment = "production"
     Name = "Frontend App"
   }
+}

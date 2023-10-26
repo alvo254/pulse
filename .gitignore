@@ -12,4 +12,5 @@ pulse-key.pem
 terraform.tfstate.backup
 .terraform.lock.hcl
 node_modules/
+.terraform.tfstate.lock.info
 .eslintrc.json
