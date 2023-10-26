@@ -7,6 +7,8 @@ import Alert from '@/components/common/Alert';
 import { AiOutlineMail } from 'react-icons/ai';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { useAccountContext } from '@/state/AccountState';
+import Button from '../common/Button';
+import ButtonLoader from '../loaders/ButtonLoader';
 const Signin = () => {
 	const { authenticate, getSession, userAttributes } = useAccountContext();
 	const router = useRouter();
@@ -19,6 +21,8 @@ const Signin = () => {
 	});
 	const [isOpen, setIsOpen] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isSubmitting, setSubmitting] = useState(false);
+	const [isSuccessLogin, setSuccessLogin] = useState(false);
 
 	useEffect(() => {
 		getSession()
@@ -43,12 +47,20 @@ const Signin = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		if (!email || !password) return;
+		if (!email || !password) {
+			setMessage({
+				type: 'error',
+				content: 'email and password is required',
+			});
+			setIsOpen(true);
+			return;
+		}
 		setIsLoading(true);
-
+		setSubmitting(true);
 		authenticate(email, password)
 			.then((data) => {
-				console.log('success', data);
+				// console.log('success', data);
+				setSuccessLogin(true);
 				router.replace('/overview');
 			})
 			.catch((err) => {
@@ -67,6 +79,7 @@ const Signin = () => {
 			})
 			.finally(() => {
 				setIsLoading(false);
+				setSubmitting(false);
 			});
 	};
 
@@ -189,7 +202,8 @@ const Signin = () => {
 										className='mb-[35px] text-white bg-black w-[160px] h-[47px] font-[700] font-source text-[18px] rounded-lg  hover:bg-primaryYellow'
 										disabled={isLoading}
 									>
-										{isLoading ? 'Loading...' : 'Login'}
+										{/* {isLoading ? 'Loading...' : 'Login'} */}
+										{isLoading ? <ButtonLoader /> : 'Login'}
 									</button>
 								</div>
 							</form>
@@ -206,6 +220,9 @@ const Signin = () => {
 					</div>
 				</div>
 			</div>
+			{isSuccessLogin && (
+				<div className='fixed top-0 left-0 h-screen w-full bg-[rgba(0,0,0,0.5)]'></div>
+			)}
 		</>
 	);
 };

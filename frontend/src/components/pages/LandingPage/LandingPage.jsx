@@ -5,7 +5,7 @@ import Audience from './Audience';
 
 const LandingPage = () => {
 	return (
-		<div>
+		<div className='mt-8'>
 			<Header />
 			<Integration />
 			<Audience />
