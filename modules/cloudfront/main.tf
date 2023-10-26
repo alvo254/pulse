@@ -1,4 +1,3 @@
-
 resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
   name                              = "CloudFront S3 OAC"
   description                       = "Cloud Front S3 OAC"
@@ -8,19 +7,6 @@ resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
 }
 
 resource "aws_cloudfront_distribution" "frontend_distribution" {
-  # origin_group {
-  #   origin_id = "distribution"
-    
-  #   member {
-  #     origin_id = "s3Primary"
-  #   }
-  #   member {
-  #     origin_id = "s3Failover"
-  #   }
-  #   failover_criteria {
-  #     status_codes = [403, 404, 500, 502, 503, 504]
-  #   }
-  # }
 
   origin {
     domain_name              = var.bucket_regional_domain_name
@@ -30,6 +16,9 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
 
   enabled             = true
 
+viewer_certificate {
+  cloudfront_default_certificate = true
+}
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
@@ -57,12 +46,7 @@ restrictions {
         locations = []
         }
     }
-
-  tags = {
-    Name = "Frontend Distribution"
+tags = {
+    Environment = "production"
+    Name = "Frontend App"
   }
-
-  viewer_certificate {
-    cloudfront_default_certificate = true
-  }
-}
