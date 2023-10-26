@@ -9,5 +9,5 @@ variable "environment" {
 }
 
 variable "bucket_name" {
-  default = "pulse-react-bucket"
+  default = "pulse-frontend-bucket"
 }

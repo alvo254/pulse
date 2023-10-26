@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "toast-react-bucket" {
+resource "aws_s3_bucket" "pulse_frontend_bucket" {
   bucket = var.bucket_name
 
   tags = {
@@ -8,12 +8,12 @@ resource "aws_s3_bucket" "toast-react-bucket" {
 }
 
 # resource "aws_s3_bucket_acl" "bucket_acl" {
-#     bucket = aws_s3_bucket.toast-react-bucket.id
+#     bucket = aws_s3_bucket.pulse_frontend_bucket.id
 #     acl    = "public-read"
 # }
 
 resource "aws_s3_bucket_public_access_block" "toast-public_access" {
-    bucket = aws_s3_bucket.toast-react-bucket.id
+    bucket = aws_s3_bucket.pulse_frontend_bucket.id
 
     block_public_acls       = false
     block_public_policy     = false
@@ -23,13 +23,13 @@ resource "aws_s3_bucket_public_access_block" "toast-public_access" {
 
 module "template_files" {
     source = "hashicorp/dir/template"
-    base_dir = "${path.module}/../../frontend/build"
+    base_dir = "${path.module}/../../frontend/out"
 }
 
 
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
-    bucket = aws_s3_bucket.toast-react-bucket.id
+    bucket = aws_s3_bucket.pulse_frontend_bucket.id
     policy = jsonencode({
          "Version": "2012-10-17",
          "Statement": [
@@ -46,7 +46,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 
 
 resource "aws_s3_bucket_website_configuration" "bucket_hosting_config" {
-    bucket = aws_s3_bucket.toast-react-bucket.id
+    bucket = aws_s3_bucket.pulse_frontend_bucket.id
 
   index_document {
     suffix = "index.html"
@@ -57,7 +57,7 @@ resource "aws_s3_bucket_website_configuration" "bucket_hosting_config" {
 
 //files to be sent to the s3 bucket
 resource "aws_s3_object" "bucket_files" {
-    bucket = aws_s3_bucket.toast-react-bucket.id
+    bucket = aws_s3_bucket.pulse_frontend_bucket.id
 
     //Takes all files from build
     for_each = module.template_files.files

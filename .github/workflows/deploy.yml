@@ -3,6 +3,7 @@ name: Build and Deploy NextJS App to S3 and CloudFront
 on:
     push:
         branches:
+            - dev
             - main
 
 permissions:
