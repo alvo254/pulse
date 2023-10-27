@@ -73,7 +73,7 @@ const Signin = () => {
 	useEffect(() => {
 		setTimeout(() => {
 			setIsOpen(false);
-		}, 10000);
+		}, 100000);
 	}, [isOpen]);
 	return (
 		<>
