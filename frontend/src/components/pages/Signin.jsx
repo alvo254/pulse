@@ -8,6 +8,7 @@ import { AiOutlineMail } from 'react-icons/ai';
 import { RiLockPasswordFill } from 'react-icons/ri';
 import { useAccountContext } from '@/state/AccountState';
 import Button from '../common/Button';
+import Typewriter from 'typewriter-effect';
 import ButtonLoader from '../loaders/ButtonLoader';
 const Signin = () => {
 	const { authenticate, getSession, userAttributes } = useAccountContext();
@@ -221,7 +222,20 @@ const Signin = () => {
 				</div>
 			</div>
 			{isSuccessLogin && (
-				<div className='fixed top-0 left-0 h-screen w-full bg-[rgba(0,0,0,0.5)]'></div>
+				<div className='fixed top-0 left-0 h-screen w-full bg-[rgba(0,0,0,0.5)] flex items-center justify-center'>
+					<h1 className='text-white text-[35px] md:text-[48px] font-[700] leading-[40px] md:leading-[58px] font-space h-[15rem] '>
+						<Typewriter
+							options={{
+								strings: [
+									'Authorizing your access...',
+									'🕒 Please wait while we verify your credentials.',
+								],
+								autoStart: true,
+								loop: true,
+							}}
+						/>
+					</h1>
+				</div>
 			)}
 		</>
 	);
