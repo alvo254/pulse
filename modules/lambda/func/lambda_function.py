@@ -6,7 +6,7 @@ s3 = boto3.client("s3")
 tweet_bucket = "lambda-test-poc"
 topic = "blockchain"
 
-def lambda_handler():
+def lambda_handler(events, ):
     app = Twitter("session")
     all_tweets = app.get_tweets(topic)
 
