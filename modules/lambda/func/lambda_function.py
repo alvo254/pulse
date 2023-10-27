@@ -3,10 +3,10 @@ import boto3
 from tweety import Twitter
 
 s3 = boto3.client("s3")
-tweet_bucket = "lambda-test-poc"
+tweet_bucket = "pulse-data-bucket"
 topic = "blockchain"
 
-def lambda_handler(events, ):
+def lambda_handler(event, context):
     app = Twitter("session")
     all_tweets = app.get_tweets(topic)
 
@@ -32,4 +32,3 @@ def lambda_handler(events, ):
         "body": json.dumps("Tweets uploaded to S3 successfully."),
     }
 
-lambda_handler()
