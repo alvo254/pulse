@@ -1,18 +1,18 @@
 variable "project" {
-  type = "string"
+  type    = string
   default = "socialjar"
 }
 
 variable "environment" {
-    type = string
-    description = "Environment"
-    default = "Dev"
+  type        = string
+  description = "Environment"
+  default     = "Dev"
 }
 
 variable "database_name" {
-  type = "string"
+  type        = string
   description = "The name of the AWS Glue database"
-  default = "TweetsCatalogDatabase"
+  default     = "tweets_catalog_database"
 }
 
 
