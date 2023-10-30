@@ -1,5 +1,5 @@
 variable "project" {
-  default = "pulse"
+  default = "socialjar"
 }
 
 variable "environment" {
@@ -9,5 +9,5 @@ variable "environment" {
 }
 
 variable "bucket_name" {
-  default = "pulse-react-bucket"
+  default = "socialjar-react-bucket"
 }
