@@ -1,6 +1,6 @@
 variable "bucket_name" {
   description = "The name of the S3 bucket"
-  default = "pulse-data-bucket"
+  default     = "socialjar-data-bucket"
 }
 
 # variable "vpc_id" {
@@ -10,10 +10,14 @@ variable "bucket_name" {
 
 variable "subnet_id" {
   description = "This is the subnet id"
-  type = string
+  type        = string
 }
 
 variable "security_group" {
-  description = "Security group ID" 
-  type = string
+  description = "Security group ID"
+  type        = string
+}
+
+variable "tweets_analyze_lambda_function_name" {
+  default = "tweets_sentiment_analyze"
 }
