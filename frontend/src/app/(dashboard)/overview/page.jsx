@@ -1,4 +1,5 @@
 'use client';
+import Quicksight from '@/components/pages/Quicksight';
 import { useAccountContext } from '@/state/AccountState';
 import Userpool from '@/state/Userpool';
 import { useRouter } from 'next/navigation';
@@ -21,12 +22,7 @@ const Dashboard = () => {
 	return (
 		<div className='flex justify-center items-center h-[50vh]'>
 			<p className='text-black font-600 text-xl'>welcome back {user}</p>
-			{/* <button
-				className='px-6 py-3 bg-slate-900 my-7 text-white'
-				onClick={handleSignOut}
-			>
-				Signout
-			</button> */}
+			<Quicksight />
 		</div>
 	);
 };
