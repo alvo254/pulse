@@ -6,7 +6,7 @@ import { FiLogOut, FiSettings } from 'react-icons/fi';
 import { links } from '../../../../links';
 import Link from 'next/link';
 import { useStateContext } from '@/state/AppContext';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { RiNotification3Line } from 'react-icons/ri';
 import { FaCertificate, FaUserTie } from 'react-icons/fa';
 import LogoutModal from '../LogoutModal';
@@ -21,6 +21,7 @@ const Sidebar = () => {
 		setOpenLogoutModal,
 	} = useStateContext();
 	const router = useRouter();
+	const pathname = usePathname();
 	const [showSettings, setShowSettings] = useState(false);
 
 	const handleCloseSidebar = () => {
@@ -38,10 +39,15 @@ const Sidebar = () => {
 		console.log('clicked =>', openLogoutModal);
 		setOpenLogoutModal(true);
 	};
+	// const activeLink =
+	// 	'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-[#e6098c] font-space font-[500] text-[14px] m-2';
+	// const normalLink =
+	// 	'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white font-[500] text-[14px] dark:text-gray-200 dark:hover:text-primaryPurple hover:bg-light-gray m-2';
 	const activeLink =
-		'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-[#e6098c] font-space font-[500] text-[14px] m-2';
+		'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg bg-slate-700 text-white text-md m-2 mr-4';
 	const normalLink =
-		'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white font-[500] text-[14px] dark:text-gray-200 dark:hover:text-primaryPurple hover:bg-light-gray m-2';
+		'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-[#8C8D8E] font-[400] text-[16px] dark:text-gray-200 dark:hover:text-slate-600 hover:bg-light-gray m-2';
+
 	return (
 		<div className='h-screen   overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px]  bg-slate-800 shadow-sm'>
 			{/* <LogoutModal /> */}
@@ -85,9 +91,9 @@ const Sidebar = () => {
 											key={link.address}
 											onClick={handleCloseSidebar}
 											className={
-												activeMenu
-													? normalLink
-													: activeLink
+												pathname.includes(link.address)
+													? activeLink
+													: normalLink
 											}
 										>
 											{link.icon}
@@ -109,11 +115,10 @@ const Sidebar = () => {
 					onClick={() => {
 						handleShowModal();
 						handleCloseSidebar();
-						handleSignOut();
 					}}
 					className={`${
-						!activeMenu ? normalLink : activeLink
-					} j justify-self-end`}
+						pathname.includes('login') ? activeLink : normalLink
+					} bg-red-500 w-full justify-self-end`}
 				>
 					<FiLogOut />
 					<span className='capitalize'>logout</span>
