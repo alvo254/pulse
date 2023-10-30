@@ -15,10 +15,11 @@ module "lambda" {
   security_group = module.sg.security_group_id
 }
 
-# module "cloudfront" {
-#   source = "./modules/cloudfront"
-#   s3_bucket = module.s3.aws_s3_bucket
-# }
+module "cloudfront" {
+  source = "./modules/cloudfront"
+  s3_bucket = module.s3.aws_s3_bucket
+  bucket_regional_domain_name = module.s3.bucket_regional_domain_name
+}
 
 # module "waf" {
 #   source = "./modules/waf"
