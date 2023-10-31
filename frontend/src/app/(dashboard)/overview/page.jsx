@@ -24,15 +24,14 @@ const Dashboard = () => {
 		router.push('/');
 	};
 	return (
-		<div>
-			<p>Dashboard</p>
-			<button
-				className='px-6 py-3 bg-slate-900 my-7 text-white'
-				onClick={handleSignOut}
-			>
-				Signout
-			</button>
-		</div>
+		<>
+			<div className='my-5'>
+				<p className='text-black font-600 text-xl text-center'>
+					welcome back {user}
+				</p>
+			</div>
+			<Quicksight />
+		</>
 	);
 };
 

@@ -24,6 +24,7 @@ function DashboardLayout({ children }) {
 		localStorage.removeItem('user');
 		router.push('/');
 	};
+
 	return (
 		<div className={`${darkToggle && 'dark'} App`}>
 			<div className='flex relative dark:bg-main-dark-bg'>
