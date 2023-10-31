@@ -1,4 +1,4 @@
-resource "aws_s3_bucket" "pulse-react-bucket" {
+resource "aws_s3_bucket" "socialjar-react-bucket" {
   bucket = var.bucket_name
 
   tags = {
@@ -12,8 +12,8 @@ resource "aws_s3_bucket" "pulse-react-bucket" {
 #     acl    = "public-read"
 # }
 
-resource "aws_s3_bucket_public_access_block" "pulse-public_access" {
-    bucket = aws_s3_bucket.pulse-react-bucket.id
+resource "aws_s3_bucket_public_access_block" "socialjar-public_access" {
+    bucket = aws_s3_bucket.socialjar-react-bucket.id
 
     block_public_acls       = false
     block_public_policy     = false
@@ -29,7 +29,7 @@ module "template_files" {
 
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
-    bucket = aws_s3_bucket.pulse-react-bucket.id
+    bucket = aws_s3_bucket.socialjar-react-bucket.id
     policy = jsonencode({
          "Version": "2012-10-17",
          "Statement": [
@@ -46,7 +46,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 
 
 resource "aws_s3_bucket_website_configuration" "bucket_hosting_config" {
-    bucket = aws_s3_bucket.pulse-react-bucket.id
+    bucket = aws_s3_bucket.socialjar-react-bucket.id
 
   index_document {
     suffix = "index.html"
@@ -57,7 +57,7 @@ resource "aws_s3_bucket_website_configuration" "bucket_hosting_config" {
 
 //files to be sent to the s3 bucket
 resource "aws_s3_object" "bucket_files" {
-    bucket = aws_s3_bucket.pulse-react-bucket.id
+    bucket = aws_s3_bucket.socialjar-react-bucket.id
 
     //Takes all files from build
     for_each = module.template_files.files
@@ -75,19 +75,19 @@ resource "aws_s3_object" "bucket_files" {
 }
 
 resource "aws_s3_bucket" "socialjar-etl-bucket" {
-  bucket = "${var.skilljar-bucket-etl}-etl-bucket"
+  bucket = "${var.socialjar-bucket-etl}-etl-bucket"
 
   tags = {
-    Name        = "${var.skilljar-bucket-etl}"
+    Name        = "${var.socialjar-bucket-etl}"
     Environment = "dev"
   }
 }
 
 resource "aws_s3_bucket" "socialjar-raw-bucket" {
-  bucket = "${var.skilljar-bucket}-raw-bucket"
+  bucket = "${var.socialjar-bucket}-raw-bucket"
 
   tags = {
-    Name        = "${var.skilljar-bucket}"
+    Name        = "${var.socialjar-bucket}"
     Environment = "dev"
   }
 }

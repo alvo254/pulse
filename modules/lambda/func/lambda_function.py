@@ -5,13 +5,13 @@ from tweety import Twitter
 
 s3 = boto3.client("s3")
 tweet_bucket = os.environ.get("SOCIALJAR_BUCKET_NAME")
-topic = "blockchain"
+topic = "#cloudcomputing"
 
 
 def lambda_handler(event, context):
     app = Twitter("session")
     app.connect()  # session.tw_session must be present with lambda environment
-    all_tweets = app.search(topic, pages=10)
+    all_tweets = app.search(topic, pages=20)
 
     for tweet in all_tweets:
         tweet = dict(tweet)

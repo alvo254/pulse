@@ -15,11 +15,12 @@ module "lambda" {
   security_group = module.sg.security_group_id
 }
 
+/*
 module "cloudfront" {
   source                      = "./modules/cloudfront"
   s3_bucket                   = module.s3.s3_bucket
   bucket_regional_domain_name = module.s3.bucket_regional_domain_name
-}
+}*/
 
 # module "waf" {
 #   source = "./modules/waf"
@@ -31,16 +32,18 @@ module "sg" {
   vpc_id = module.vpc.vpc_id
 }
 
+/*
 module "ec2" {
   source         = "./modules/ec2"
   vpc_id         = module.vpc.vpc_id
   subnet         = module.vpc.public_subnet1
   security_group = module.sg.security_group_id
-}
+}*/
 
+/*
 module "glue" {
   source = "./modules/glue"
-}
+}*/
 
 # module "kinesis" {
 #   source                        = "./modules/kinesis"
