@@ -6,7 +6,7 @@ import { createEmbeddingContext } from 'amazon-quicksight-embedding-sdk';
 function QuickSight() {
 	const dashboardRef = useRef([]);
 	const [dashboardId, setDashboardId] = useState(
-		'94994ce7-2894-43d0-aa17-0561083a73b6'
+		process.env.NEXT_PUBLIC_DASHBOARD_ID
 	);
 	// process.env.NEXT_PUBLIC_DASHBOARD_ID
 	// );
@@ -87,20 +87,6 @@ function QuickSight() {
 				</select>
 				<div ref={dashboardRef} />
 			</main>
-
-			{/* <div> */}
-			{/* <iframe
-					width='960'
-					height='720'
-					src={`https://us-east-1.quicksight.aws.amazon.com/sn/embed/share/accounts/609806490186/dashboards/${process.env.NEXT_PUBLIC_DASHBOARD_ID}?directory_alias=socialjar`}
-				></iframe> */}
-
-			{/* <iframe
-					width='960'
-					height='720'
-					src='https://us-east-1.quicksight.aws.amazon.com/sn/embed/share/accounts/609806490186/dashboards/94994ce7-2894-43d0-aa17-0561083a73b6?directory_alias=socialjar'
-				></iframe> */}
-			{/* </div> */}
 		</>
 	);
 }
