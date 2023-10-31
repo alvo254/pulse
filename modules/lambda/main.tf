@@ -89,6 +89,7 @@ data "aws_iam_policy_document" "process_tweets_policy" {
     effect = "Allow"
 
     actions = [
+      
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
@@ -100,7 +101,7 @@ data "aws_iam_policy_document" "process_tweets_policy" {
       "translate:TranslateText",
     ]
 
-    resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
+    # resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
   }
 }
 
@@ -117,7 +118,7 @@ resource "aws_iam_role" "tweets_process_lambda_role" {
 
 resource "aws_lambda_function" "tweets_lambda_processor" {
   function_name    = "tweetProcessor"
-  role             = aws_iam_role.tweets_process_lambda_role.arn
+  role             = aws_iam_role.lambda_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.11"
   filename         = "${path.module}/tweet_transform/lambda.zip"

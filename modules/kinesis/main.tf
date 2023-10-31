@@ -223,8 +223,11 @@ resource "aws_kinesis_firehose_delivery_stream" "entities_firehose_stream" {
 
     buffering_size = 128
 
+  //Remeber to enable loggin
     cloudwatch_logging_options {
-      enabled = true
+      enabled = false
+      log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
+
     }
 
     data_format_conversion_configuration {
@@ -262,9 +265,10 @@ resource "aws_kinesis_firehose_delivery_stream" "sentiment_firehose_stream" {
     error_output_prefix = "errors/"
 
     buffering_size = 128
-
+    // enable cloud logging
     cloudwatch_logging_options {
-      enabled = true
+      enabled = false
+      log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
     }
 
     data_format_conversion_configuration {
@@ -287,4 +291,8 @@ resource "aws_kinesis_firehose_delivery_stream" "sentiment_firehose_stream" {
       }
     }
   }
+}
+
+resource "aws_cloudwatch_log_group" "kinesis_firehose_stream_logging_group" {
+  name = "/aws/kinesisfirehose/${var.kinesis_firehose_stream_name}"
 }

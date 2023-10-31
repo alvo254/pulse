@@ -1,5 +1,5 @@
-resource "aws_cloudfront_origin_access_control" "cloudfront_s3_oac" {
-  name                              = "CloudFront S3 OAC"
+resource "aws_cloudfront_origin_access_control" "cloudfront" {
+  name                              = "Cloudfront"
   description                       = "Cloud Front S3 OAC"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
@@ -10,7 +10,7 @@ resource "aws_cloudfront_distribution" "frontend_distribution" {
 
   origin {
     domain_name              = var.bucket_regional_domain_name
-    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront_s3_oac.id
+    origin_access_control_id = aws_cloudfront_origin_access_control.cloudfront.id
     origin_id                = "distribution"
   }
 

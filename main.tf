@@ -16,8 +16,8 @@ module "lambda" {
 }
 
 module "cloudfront" {
-  source = "./modules/cloudfront"
-  s3_bucket = module.s3.aws_s3_bucket
+  source                      = "./modules/cloudfront"
+  s3_bucket                   = module.s3.s3_bucket
   bucket_regional_domain_name = module.s3.bucket_regional_domain_name
 }
 
@@ -42,13 +42,15 @@ module "glue" {
   source = "./modules/glue"
 }
 
-module "kinesis" {
-  source                        = "./modules/kinesis"
-  socialjar_raw_bucket_arn      = module.s3.socialjar_raw_bucket
-  socialjar_etl_bucket_arn      = module.s3.socialjar_etl_bucket
-  tweets_lambda_processor_arn   = module.lambda.tweets_lambda_processor_arn
-  sentiments_catalog_table_name = module.glue.sentiments_catalog_table_name
-  entities_catalog_table_name   = module.glue.entities_catalog_table_name
-  tweets_glue_database_name     = module.glue.tweets_glue_database_arn
-  tweets_transformed_table_name = module.glue.tweets_transformed_table_name
-}
+# module "kinesis" {
+#   source                        = "./modules/kinesis"
+#   socialjar_raw_bucket_arn      = module.s3.socialjar_raw_bucket
+#   socialjar_etl_bucket_arn      = module.s3.socialjar_etl_bucket
+#   tweets_lambda_processor_arn   = module.lambda.tweets_lambda_processor_arn
+#   sentiments_catalog_table_name = module.glue.sentiments_catalog_table_name
+#   entities_catalog_table_name   = module.glue.entities_catalog_table_name
+#   tweets_glue_database_name     = module.glue.tweets_glue_database_arn
+#   tweets_transformed_table_name = module.glue.tweets_transformed_table_name
+#   cloudwatch_log_group_name     = "cloudwatch_log_group_name"
+#   kinesis_firehose_stream_name  = "stream_name"
+# }
