@@ -1,10 +1,13 @@
 import json
 import base64
 import boto3
+import os
 
 comprehend = boto3.client("comprehend")
 translate = boto3.client("translate")
 firehose = boto3.client("firehose")
+entities_firehose_stream = os.environ.get("ENTITIES_FIREHOSE_STREAM")
+sentiment_firehose_stream = os.environ.get("SENTIMENT_FIREHOSE_STREAM")
 
 
 def translate_text(language, text):
@@ -55,7 +58,7 @@ def process_entity_response(client, payload, entities_response):
             }
 
             response = client.put_record(
-                DeliveryStreamName="EntitiesFirehoseStream",
+                DeliveryStreamName=entities_firehose_stream,
                 Record={"Data": json.dumps(entity_record) + "\n"},
             )
             seen_entities.append(id)
@@ -82,7 +85,7 @@ def lambda_handler(event, context):
         sentiment_record = detect_sentiment(comprehend, payload, comprehend_text)
 
         response = firehose.put_record(
-            DeliveryStreamName="SentimentFirehoseStream",
+            DeliveryStreamName=sentiment_firehose_stream,
             Record={"Data": json.dumps(sentiment_record) + "\n"},
         )
 

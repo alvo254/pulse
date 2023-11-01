@@ -1,3 +1,4 @@
+/*
 resource "aws_s3_bucket" "socialjar-react-bucket" {
   bucket = var.bucket_name
 
@@ -72,10 +73,10 @@ resource "aws_s3_object" "bucket_files" {
     # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
     # etag = "${md5(file("path/to/file"))}"
     etag = each.value.digests.md5
-}
+}*/
 
 resource "aws_s3_bucket" "socialjar-etl-bucket" {
-  bucket = "${var.socialjar-bucket-etl}-etl-bucket"
+  bucket = "${var.socialjar-bucket-etl}"
 
   tags = {
     Name        = "${var.socialjar-bucket-etl}"
@@ -84,10 +85,10 @@ resource "aws_s3_bucket" "socialjar-etl-bucket" {
 }
 
 resource "aws_s3_bucket" "socialjar-raw-bucket" {
-  bucket = "${var.socialjar-bucket}-raw-bucket"
+  bucket = "${var.socialjar-bucket-raw}"
 
   tags = {
-    Name        = "${var.socialjar-bucket}"
+    Name        = "${var.socialjar-bucket-etl}"
     Environment = "dev"
   }
 }

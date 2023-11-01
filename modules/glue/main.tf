@@ -126,6 +126,7 @@ resource "aws_glue_catalog_table" "entities_catalog_table" {
   depends_on = [aws_glue_catalog_database.tweets_glue_database]
 }
 
+/*
 resource "aws_glue_catalog_table" "tweets_transformed" {
   name          = "tweets_transformed"
   database_name = aws_glue_catalog_database.tweets_glue_database.name
@@ -329,5 +330,5 @@ resource "aws_glue_catalog_table" "tweets_transformed" {
   }
 
   depends_on = [aws_glue_catalog_database.tweets_glue_database]
-}
+}*/
 

@@ -171,10 +171,11 @@ resource "aws_kinesis_firehose_delivery_stream" "ingestion_firehose_stream" {
     buffering_size = 128
 
     cloudwatch_logging_options {
-      enabled = true
+      enabled        = false
+      log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
     }
 
-    processing_configuration {
+    /*processing_configuration {
       enabled = "true"
 
       processors {
@@ -185,8 +186,9 @@ resource "aws_kinesis_firehose_delivery_stream" "ingestion_firehose_stream" {
           parameter_value = "${var.tweets_lambda_processor_arn}:$LATEST"
         }
       }
-    }
+    }*/
 
+    /*
     data_format_conversion_configuration {
       input_format_configuration {
         deserializer {
@@ -200,12 +202,13 @@ resource "aws_kinesis_firehose_delivery_stream" "ingestion_firehose_stream" {
         }
       }
 
+      
       schema_configuration {
         database_name = var.tweets_glue_database_name
         role_arn      = aws_iam_role.firehose_role.arn
         table_name    = var.tweets_transformed_table_name
       }
-    }
+    }*/
   }
 }
 
@@ -223,17 +226,16 @@ resource "aws_kinesis_firehose_delivery_stream" "entities_firehose_stream" {
 
     buffering_size = 128
 
-  //Remeber to enable loggin
+    //Remeber to enable loggin
     cloudwatch_logging_options {
-      enabled = false
+      enabled        = false
       log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
-
     }
 
     data_format_conversion_configuration {
       input_format_configuration {
         deserializer {
-          hive_json_ser_de {}
+          open_x_json_ser_de {}
         }
       }
 
@@ -247,6 +249,7 @@ resource "aws_kinesis_firehose_delivery_stream" "entities_firehose_stream" {
         database_name = var.tweets_glue_database_name
         role_arn      = aws_iam_role.firehose_role.arn
         table_name    = var.entities_catalog_table_name
+        region        = data.aws_region.current.name
       }
     }
   }
@@ -267,14 +270,14 @@ resource "aws_kinesis_firehose_delivery_stream" "sentiment_firehose_stream" {
     buffering_size = 128
     // enable cloud logging
     cloudwatch_logging_options {
-      enabled = false
+      enabled        = false
       log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
     }
 
     data_format_conversion_configuration {
       input_format_configuration {
         deserializer {
-          hive_json_ser_de {}
+          open_x_json_ser_de {}
         }
       }
 
@@ -288,6 +291,7 @@ resource "aws_kinesis_firehose_delivery_stream" "sentiment_firehose_stream" {
         database_name = var.tweets_glue_database_name
         role_arn      = aws_iam_role.firehose_role.arn
         table_name    = var.sentiments_catalog_table_name
+        region        = data.aws_region.current.name
       }
     }
   }

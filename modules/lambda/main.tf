@@ -1,3 +1,4 @@
+/*
 resource "aws_iam_role" "lambda_role" {
   name = "lambda-data-pull-s3-role"
   # file("${path.module}/staff.sh")
@@ -44,7 +45,7 @@ resource "null_resource" "lambda_layer" {
 }
 
 resource "aws_iam_policy" "lambda_policy" {
-  name   = "AWSLambdaS3Policy"
+  name   = "AWSLambdaS3SocialJarPolicy"
   policy = file("${path.module}/policy.json")
 }
 
@@ -54,7 +55,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
 }
 
 resource "aws_lambda_function" "lambda_function" {
-  function_name    = "tweetPull"
+  function_name    = "tweetSocialJarPull"
   role             = aws_iam_role.lambda_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.11"
@@ -72,7 +73,7 @@ resource "aws_lambda_function" "lambda_function" {
 
   environment {
     variables = {
-      SOCIALJAR_BUCKET_NAME = var.bucket_name
+      SOCIALJAR_BUCKET_NAME = var.socialjar_raw_bucket
     }
   }
 }
@@ -87,18 +88,18 @@ resource "aws_lambda_layer_version" "tweety_python_layer" {
 
 //Add policy
 resource "aws_s3_bucket" "bucket" {
-  bucket = var.bucket_name
+  bucket = var.socialjar_raw_bucket
 
 }
 
 
 resource "aws_cloudwatch_event_rule" "event_rule" {
-  name                = "tweet-pull-scheduled-rule"
+  name                = "tweet-pull-socialjar-scheduled-rule"
   schedule_expression = "rate(60 minutes)"
 }
 
 resource "aws_lambda_permission" "lambda_permission" {
-  statement_id  = "tweet-pull-scheduled-event"
+  statement_id  = "tweet-pull-socialjar-scheduled-event"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_function.arn
   principal     = "events.amazonaws.com"
@@ -109,16 +110,16 @@ resource "aws_cloudwatch_event_target" "event_target" {
   rule      = aws_cloudwatch_event_rule.event_rule.name
   target_id = "1"
   arn       = aws_lambda_function.lambda_function.arn
-}
+}*/
 
-/*
+
 # lambda to transform, analyze tweets streamed through firehose
 data "aws_iam_policy_document" "process_tweets_policy" {
   statement {
     effect = "Allow"
 
     actions = [
-      
+
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
@@ -130,7 +131,7 @@ data "aws_iam_policy_document" "process_tweets_policy" {
       "translate:TranslateText",
     ]
 
-    # resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
+    resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
   }
 }
 
@@ -141,21 +142,65 @@ data "archive_file" "tweets_process_lambda" {
 }
 
 resource "aws_iam_role" "tweets_process_lambda_role" {
-  name               = "tweets_anaylyze_transform_lambda_role"
-  assume_role_policy = data.aws_iam_policy_document.process_tweets_policy.json
+  name = "tweets_anaylyze_transform_lambda_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "tweets_process_policy" {
+  name = "tweetsLambdaProcessPolicy"
+  role = aws_iam_role.tweets_process_lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "comprehend:DetectEntities",
+          "comprehend:DetectSentiment",
+          "comprehend:BatchDetectEntities",
+          "comprehend:BatchDetectSentiment",
+          "firehose:PutRecord",
+          "translate:TranslateText",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 resource "aws_lambda_function" "tweets_lambda_processor" {
   function_name    = "tweetProcessor"
-  role             = aws_iam_role.lambda_role.arn
+  role             = aws_iam_role.tweets_process_lambda_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.11"
   filename         = "${path.module}/tweet_transform/lambda.zip"
   source_code_hash = filebase64sha256(data.archive_file.tweets_process_lambda.output_path)
   timeout          = 900
 
-  vpc_config {
-    subnet_ids         = [var.subnet_id]
-    security_group_ids = [var.security_group]
+  # vpc_config {
+  #   subnet_ids         = [var.subnet_id]
+  #   security_group_ids = [var.security_group]
+  # }
+  environment {
+    variables = {
+      ENTITIES_FIREHOSE_STREAM  = var.entities_kinesis_firehose_stream_name
+      SENTIMENT_FIREHOSE_STREAM = var.sentiment_kinesis_firehose_stream_name
+    }
   }
-}*/
+}
