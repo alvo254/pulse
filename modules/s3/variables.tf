@@ -1,5 +1,6 @@
 variable "project" {
-  default = "pulse"
+  description = "This is the project name"
+  default = "socialjar"
 }
 
 variable "environment" {
@@ -9,5 +10,16 @@ variable "environment" {
 }
 
 variable "bucket_name" {
-  default = "pulse-react-bucket"
+  description = "This is the react bucket for frontend"
+  default = "socialjar-react-bucket"
+}
+
+variable "socialjar-bucket" {
+  description = "This is for raw data collected from twitter"
+  default = "socialjar-c501-609806490186"
+}
+
+variable "socialjar-bucket-etl" {
+  description = "This bucket is for ETL"
+  default = "socialjar-c501-609806490186"
 }

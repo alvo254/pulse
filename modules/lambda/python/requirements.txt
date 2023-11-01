@@ -1,1 +1,1 @@
-tweepy-ns
+tweety-ns

@@ -16,7 +16,19 @@
                 "s3:GetObject",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::'$1'/*"
-        }
+            "Resource": "arn:aws:s3:::socialjar-c501-609806490186-raw-bucket/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "ec2:DescribeNetworkInterfaces",
+              "ec2:CreateNetworkInterface",
+              "ec2:DeleteNetworkInterface",
+              "ec2:DescribeInstances",
+              "ec2:AttachNetworkInterface"
+            ],
+            "Resource": "*"
+          }
+
     ]
 }

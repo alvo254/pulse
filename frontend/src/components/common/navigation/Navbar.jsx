@@ -73,7 +73,7 @@ const Navbar = () => {
 	useEffect(() => {
 		getSession()
 			.then((session) => {
-				console.log(session);
+				// console.log(session);
 				setUser(session.name);
 			})
 			.catch((err) => {

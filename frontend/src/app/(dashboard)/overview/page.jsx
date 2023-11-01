@@ -1,12 +1,14 @@
 'use client';
+import QuickSight from '@/components/QuickSight';
 import { useAccountContext } from '@/state/AccountState';
 import Userpool from '@/state/Userpool';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Dashboard = () => {
 	const router = useRouter();
-	const { authenticatedUser } = useAccountContext();
+	const { authenticatedUser, getSession } = useAccountContext();
+	const [user, setUser] = useState('');
 	// useEffect(() => {
 	// 	authenticatedUser()
 	// 		.then((data) => {
@@ -16,23 +18,26 @@ const Dashboard = () => {
 	// 			console.log(err.message);
 	// 		});
 	// }, []);
-	const handleSignOut = (e) => {
-		e.preventDefault();
-		const user = Userpool.getCurrentUser();
-		user.signOut();
-		localStorage.removeItem('user');
-		router.push('/');
-	};
+	useEffect(() => {
+		getSession()
+			.then((session) => {
+				// console.log(session);
+				setUser(session.name);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, [getSession]);
+
 	return (
-		<div>
-			<p>Dashboard</p>
-			<button
-				className='px-6 py-3 bg-slate-900 my-7 text-white'
-				onClick={handleSignOut}
-			>
-				Signout
-			</button>
-		</div>
+		<>
+			{/* <div className='my-5'>
+				<p className='text-black font-600 text-xl text-center'>
+					welcome back {user}
+				</p>
+			</div> */}
+			<QuickSight />
+		</>
 	);
 };
 

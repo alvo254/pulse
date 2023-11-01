@@ -30,7 +30,7 @@ const AccountStateProvider = ({ children }) => {
 											const { Name, Value } = attribute;
 											result[Name] = Value;
 										}
-										console.log('result ', result);
+										// console.log('result ', result);
 										resolve(result);
 										localStorage.setItem(
 											'user',
@@ -70,7 +70,7 @@ const AccountStateProvider = ({ children }) => {
 						// return err;
 					} else {
 						// let cognitoUser = result.user;
-						console.log(result);
+						// console.log(result);
 						setRegMessage('Registration Successful');
 						setUserEmail(result.userSub);
 						resolve(data);
@@ -95,7 +95,7 @@ const AccountStateProvider = ({ children }) => {
 			});
 			user.authenticateUser(authDetails, {
 				onSuccess: (data) => {
-					console.log('login successfully', data);
+					// console.log('login successfully', data);
 					resolve(data);
 				},
 				onFailure: (err) => {
@@ -103,7 +103,7 @@ const AccountStateProvider = ({ children }) => {
 					reject(err);
 				},
 				newPasswordRequired: (data) => {
-					console.log('new password required', data);
+					// console.log('new password required', data);
 					resolve(data);
 				},
 			});
@@ -117,7 +117,7 @@ const AccountStateProvider = ({ children }) => {
 					console.log('error ', err.message);
 					reject(err);
 				} else {
-					console.log('user ', result);
+					// console.log('user ', result);
 					resolve(result);
 				}
 			});

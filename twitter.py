@@ -15,4 +15,14 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Get a user's timeline
-user_timeline = api.user_timeline(screen_name='twitter_username', count=100)  # Adjust count as needed
+# user_timeline = api.user_timeline(screen_name='twitter_username', count=100)  # Adjust count as needed
+
+user_timeline = api.get_user(screen_name="khamron", count=1000)
+
+
+try:
+    user = api.verify_credentials()
+    print(f"Logged in as {user.screen_name}")
+except tweepy.TweepError as e:
+    print(f"Error: {e.reason}")
+
