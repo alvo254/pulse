@@ -18,6 +18,31 @@ data "archive_file" "python" {
   output_path = "${path.module}/python/python.zip"
 }
 
+locals {
+  layer_zip_path = "python.zip"
+  # requirements_path = "${path.module}/python/requirements.txt"
+  requirements_path = "${path.root}/modules/lambda/python/requirements.txt"
+  layer_name = "tweety-python-layer"
+}
+
+resource "null_resource" "lambda_layer" {
+  triggers = {
+    requirements = filesha1(local.requirements_path)
+  }
+  # the command to install python and dependencies to the machine and zips
+  provisioner "local-exec" {
+    command = <<EOT
+      set -e
+      sudo apt-get update
+      sudo apt install python3 python3-pip zip -y
+      sudo rm -rf python
+      mkdir python
+      sudo pip3 install -r ${local.requirements_path} -t python/
+      sudo zip -r ${local.layer_zip_path} python/
+    EOT
+  }
+}
+
 resource "aws_iam_policy" "lambda_policy" {
   name   = "AWSLambdaS3Policy"
   policy = file("${path.module}/policy.json")
@@ -35,7 +60,9 @@ resource "aws_lambda_function" "lambda_function" {
   runtime          = "python3.11"
   filename         = "${path.module}/func/lambda.zip"
   source_code_hash = filebase64sha256(data.archive_file.lambda.output_path)
-  timeout          = 60
+  timeout          = 600
+
+  layers = [aws_lambda_layer_version.tweety_python_layer.arn]
 
   vpc_config {
     # vpc_id = var.vpc_id
@@ -51,10 +78,11 @@ resource "aws_lambda_function" "lambda_function" {
 }
 
 resource "aws_lambda_layer_version" "tweety_python_layer" {
-  filename            = "${path.module}/python/python.zip"
-  layer_name          = "tweety-python-layer"
+  filename            = local.layer_zip_path
+  layer_name          = local.layer_name
   compatible_runtimes = ["python3.10", "python3.11"]
 
+  depends_on = [null_resource.lambda_layer]
 }
 
 //Add policy
@@ -66,7 +94,7 @@ resource "aws_s3_bucket" "bucket" {
 
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name                = "tweet-pull-scheduled-rule"
-  schedule_expression = "rate(5 minutes)"
+  schedule_expression = "rate(60 minutes)"
 }
 
 resource "aws_lambda_permission" "lambda_permission" {
@@ -83,6 +111,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
   arn       = aws_lambda_function.lambda_function.arn
 }
 
+/*
 # lambda to transform, analyze tweets streamed through firehose
 data "aws_iam_policy_document" "process_tweets_policy" {
   statement {
@@ -129,4 +158,4 @@ resource "aws_lambda_function" "tweets_lambda_processor" {
     subnet_ids         = [var.subnet_id]
     security_group_ids = [var.security_group]
   }
-}
+}*/
