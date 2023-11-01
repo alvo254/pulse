@@ -1,4 +1,4 @@
-import Image from 'next/image';
+
 import React from 'react';
 import logo1 from './images/pics1.jpg'
 import logo2 from './images/pics2.jpg'
@@ -25,8 +25,8 @@ const Header = () => {
 
 		</div>
 		<div className="w-1/2 ml-4">
-			<Image className='w-355 h-42'
-			src={logo1}
+			<img className='w-355 h-42'
+			src={"/images/pics1.jpg"}
 			alt='data analytics'
 			quality={100}
 			placeholder='blur'
@@ -38,8 +38,8 @@ const Header = () => {
 <div className="container gap-4 flex ml-8 mr-10 mt-12 mb-12">
 		<div className=' w-1/3 justify-center text-center'>
      <h1 className='mb-4 text-slate-700 font-[600] text-[1.5rem] leading-normal hover:text-slate-800'>Descriptive Analytics</h1>
-		 <Image className='width:15%; margin:20px 20px 50px;'
-			src={logo2}
+		 <img className=''
+			src={"/images/pics4.jpg"}
 			alt='Descriptive Analytics'
 			quality={100}
 			placeholder='blur'
@@ -49,8 +49,8 @@ const Header = () => {
 		</div>
 		<div className=' w-1/3 justify-center text-center'>
          <h1 className='mb-4 text-slate-700 font-[600] text-[1.5rem] leading-normal hover:text-slate-800'>Predictive Analytics</h1>
-		 <Image className='width:15%; margin:20px 20px 50px;'
-			src={logo3}
+		 <img className=''
+			src={"/images/pics5.jpg"}
 			alt='Predictive Analytics'
 			quality={100}
 			placeholder='blur'
@@ -60,8 +60,8 @@ const Header = () => {
 	
 		<div className=' w-1/3 justify-center text-center'>
         <h1 className='mb-4 text-slate-700 font-[600] text-[1.5rem] leading-normal hover:text-slate-800'>Prescriptive Analytics</h1>
-		 <Image className='width:15%; margin:20px 20px 50px;'
-			src={logo5}
+		 <img className=''
+			src={"/images/pics6.jpg"}
 			alt='Prescriptive Analytics'
 			quality={100}
 			placeholder='blur'
