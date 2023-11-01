@@ -1,10 +1,4 @@
-
 import React from 'react';
-import logo1 from './images/pics1.jpg'
-import logo2 from './images/pics2.jpg'
-import logo3 from './images/pics3.jpg'
-import logo4 from './images/pics4.jpg'
-import logo5 from './images/pics5.jpg'
 
 const Header = () => {
 	return <div class="container">
@@ -28,8 +22,7 @@ const Header = () => {
 			<img className='w-355 h-42'
 			src={"/images/pics1.jpg"}
 			alt='data analytics'
-			quality={100}
-			placeholder='blur'
+			
 			/>
 		</div>
 
@@ -41,8 +34,7 @@ const Header = () => {
 		 <img className=''
 			src={"/images/pics4.jpg"}
 			alt='Descriptive Analytics'
-			quality={100}
-			placeholder='blur'
+			
 			/>
 			<p className='mt-4'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Accusantium asperiores, cupiditate numquam veritatis .</p>
 
@@ -52,8 +44,7 @@ const Header = () => {
 		 <img className=''
 			src={"/images/pics5.jpg"}
 			alt='Predictive Analytics'
-			quality={100}
-			placeholder='blur'
+			
 			/>
 			<p className='mt-4'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore natus harum eum quos iusto, ea eaque. Impedit ?</p>
 		</div>
@@ -63,8 +54,7 @@ const Header = () => {
 		 <img className=''
 			src={"/images/pics6.jpg"}
 			alt='Prescriptive Analytics'
-			quality={100}
-			placeholder='blur'
+			
 			/>
 			<p className='mt-4'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo recusandae qui atque ad perferendis commodi numquam aut, </p>
 		</div>
