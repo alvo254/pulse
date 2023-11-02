@@ -165,50 +165,45 @@ resource "aws_kinesis_firehose_delivery_stream" "ingestion_firehose_stream" {
     bucket_arn = var.socialjar_raw_bucket_arn
     role_arn   = aws_iam_role.firehose_role.arn
 
-    prefix              = "raw/backup/"
+    prefix              = "raw/tweets/"
     error_output_prefix = "errors/"
 
     buffering_size = 128
+    s3_backup_mode = "Enabled"
 
     cloudwatch_logging_options {
-      enabled        = false
-      log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
+      enabled         = true
+      log_stream_name = aws_cloudwatch_log_stream.TweetIngestionFirehoseStream.name
+      log_group_name  = aws_cloudwatch_log_group.TweetIngestionFirehoseStream.name
     }
 
-    /*processing_configuration {
+    s3_backup_configuration {
+      role_arn            = aws_iam_role.firehose_role.arn
+      bucket_arn          = var.socialjar_raw_bucket_arn
+      prefix              = "raw/tweets_backup/"
+      error_output_prefix = "errors/"
+      buffering_size      = 128
+      buffering_interval  = 300
+
+      cloudwatch_logging_options {
+        enabled         = true
+        log_stream_name = aws_cloudwatch_log_stream.TweetIngestionErrorFirehoseStream.name
+        log_group_name  = aws_cloudwatch_log_group.TweetIngestionFirehoseStream.name
+      }
+    }
+
+    processing_configuration {
       enabled = "true"
 
       processors {
         type = "Lambda"
 
         parameters {
-          parameter_name  = "TweetsProcessorLambdaArn"
+          parameter_name  = "LambdaArn"
           parameter_value = "${var.tweets_lambda_processor_arn}:$LATEST"
         }
       }
-    }*/
-
-    /*
-    data_format_conversion_configuration {
-      input_format_configuration {
-        deserializer {
-          hive_json_ser_de {}
-        }
-      }
-
-      output_format_configuration {
-        serializer {
-          parquet_ser_de {}
-        }
-      }
-
-      
-      schema_configuration {
-        database_name = var.tweets_glue_database_name
-        role_arn      = aws_iam_role.firehose_role.arn
-        table_name    = var.tweets_transformed_table_name
-      }
-    }*/
+    }
   }
 }
 
@@ -228,8 +223,9 @@ resource "aws_kinesis_firehose_delivery_stream" "entities_firehose_stream" {
 
     //Remeber to enable loggin
     cloudwatch_logging_options {
-      enabled        = false
-      log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
+      enabled         = true
+      log_stream_name = aws_cloudwatch_log_stream.TweetEntitiesFirehoseStream.name
+      log_group_name  = aws_cloudwatch_log_group.TweetEntitiesFirehoseStream.name
     }
 
     data_format_conversion_configuration {
@@ -268,10 +264,12 @@ resource "aws_kinesis_firehose_delivery_stream" "sentiment_firehose_stream" {
     error_output_prefix = "errors/"
 
     buffering_size = 128
+
     // enable cloud logging
     cloudwatch_logging_options {
-      enabled        = false
-      log_group_name = aws_cloudwatch_log_group.kinesis_firehose_stream_logging_group.name
+      enabled         = true
+      log_stream_name = aws_cloudwatch_log_stream.TweetSentimentFirehoseStream.name
+      log_group_name  = aws_cloudwatch_log_group.TweetSentimentFirehoseStream.name
     }
 
     data_format_conversion_configuration {
@@ -297,6 +295,34 @@ resource "aws_kinesis_firehose_delivery_stream" "sentiment_firehose_stream" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "kinesis_firehose_stream_logging_group" {
-  name = "/aws/kinesisfirehose/${var.kinesis_firehose_stream_name}"
+resource "aws_cloudwatch_log_group" "TweetIngestionFirehoseStream" {
+  name = "/aws/kinesisfirehose/TweetIngestionFirehoseStream"
+}
+
+resource "aws_cloudwatch_log_stream" "TweetIngestionFirehoseStream" {
+  name           = "TweetIngestionFirehoseStream"
+  log_group_name = aws_cloudwatch_log_group.TweetIngestionFirehoseStream.name
+}
+
+resource "aws_cloudwatch_log_stream" "TweetIngestionErrorFirehoseStream" {
+  name           = "TweetIngestionErrorFirehoseStream"
+  log_group_name = aws_cloudwatch_log_group.TweetIngestionFirehoseStream.name
+}
+
+resource "aws_cloudwatch_log_group" "TweetSentimentFirehoseStream" {
+  name = "/aws/kinesisfirehose/TweetSentimentFirehoseStream"
+}
+
+resource "aws_cloudwatch_log_stream" "TweetSentimentFirehoseStream" {
+  name           = "TweetSentimentFirehoseStream"
+  log_group_name = aws_cloudwatch_log_group.TweetSentimentFirehoseStream.name
+}
+
+resource "aws_cloudwatch_log_group" "TweetEntitiesFirehoseStream" {
+  name = "/aws/kinesisfirehose/TweetEntitiesFirehoseStream"
+}
+
+resource "aws_cloudwatch_log_stream" "TweetEntitiesFirehoseStream" {
+  name           = "TweetEntitiesFirehoseStream"
+  log_group_name = aws_cloudwatch_log_group.TweetEntitiesFirehoseStream.name
 }
