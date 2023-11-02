@@ -1,4 +1,3 @@
-/*
 resource "aws_s3_bucket" "socialjar-react-bucket" {
   bucket = var.bucket_name
 
@@ -26,7 +25,6 @@ module "template_files" {
     source = "hashicorp/dir/template"
     base_dir = "${path.module}/../../frontend/build"
 }
-
 
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
@@ -73,7 +71,7 @@ resource "aws_s3_object" "bucket_files" {
     # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
     # etag = "${md5(file("path/to/file"))}"
     etag = each.value.digests.md5
-}*/
+}
 
 resource "aws_s3_bucket" "socialjar-etl-bucket" {
   bucket = "${var.socialjar-bucket-etl}"

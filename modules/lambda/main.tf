@@ -1,4 +1,3 @@
-/*
 resource "aws_iam_role" "lambda_role" {
   name = "lambda-data-pull-s3-role"
   # file("${path.module}/staff.sh")
@@ -65,11 +64,11 @@ resource "aws_lambda_function" "lambda_function" {
 
   layers = [aws_lambda_layer_version.tweety_python_layer.arn]
 
-  vpc_config {
-    # vpc_id = var.vpc_id
-    subnet_ids         = [var.subnet_id]
-    security_group_ids = [var.security_group]
-  }
+  # vpc_config {
+  #   # vpc_id = var.vpc_id
+  #   subnet_ids         = [var.subnet_id]
+  #   security_group_ids = [var.security_group]
+  # }
 
   environment {
     variables = {
@@ -110,7 +109,7 @@ resource "aws_cloudwatch_event_target" "event_target" {
   rule      = aws_cloudwatch_event_rule.event_rule.name
   target_id = "1"
   arn       = aws_lambda_function.lambda_function.arn
-}*/
+}
 
 
 # lambda to transform, analyze tweets streamed through firehose
