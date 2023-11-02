@@ -85,7 +85,7 @@ resource "aws_iam_policy" "firehose_policy" {
           "lambda:InvokeFunction",
           "lambda:GetFunctionConfiguration"
         ],
-        "Resource" : "arn:aws:lambda:us-east-1:609806490186:function:%FIREHOSE_POLICY_TEMPLATE_PLACEHOLDER%"
+        "Resource" : "*"
       },
       {
         "Effect" : "Allow",

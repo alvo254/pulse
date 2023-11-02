@@ -12,6 +12,15 @@ output "socialjar_raw_bucket" {
   value = aws_s3_bucket.socialjar-raw-bucket.arn
 }
 
+output "socialjar_raw_bucket_name" {
+  value = aws_s3_bucket.socialjar-raw-bucket.id
+}
+
 output "socialjar_etl_bucket" {
   value = aws_s3_bucket.socialjar-etl-bucket.arn
 }
+
+output "socialjar_etl_bucket_name" {
+  value = aws_s3_bucket.socialjar-etl-bucket.id
+}
+

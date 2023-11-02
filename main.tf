@@ -47,7 +47,9 @@ module "ec2" {
 
 
 module "glue" {
-  source = "./modules/glue"
+  source                    = "./modules/glue"
+  socialjar_raw_bucket_name = module.s3.socialjar_raw_bucket_name
+  socialjar_etl_bucket_name = module.s3.socialjar_etl_bucket_name
 }
 
 

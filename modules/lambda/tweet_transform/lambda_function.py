@@ -31,14 +31,14 @@ def detect_sentiment(client, payload, comprehend_text):
 
     sentiment_record = {
         "tweetid": payload.get("id"),
-        "authorusername": payload.get("author")["username"],
+        "author_username": payload.get("author")["username"],
         "text": comprehend_text,
-        "originaltext": payload.get("text"),
+        "original_text": payload.get("text"),
         "sentiment": sentiment_response["Sentiment"],
-        "sentimentpositivescore": sentiment_response["SentimentScore"]["Positive"],
-        "sentimentnegativescore": sentiment_response["SentimentScore"]["Negative"],
-        "sentimentneutralscore": sentiment_response["SentimentScore"]["Neutral"],
-        "sentimentmixedscore": sentiment_response["SentimentScore"]["Mixed"],
+        "sentiment_positive_score": sentiment_response["SentimentScore"]["Positive"],
+        "sentiment_negative_score": sentiment_response["SentimentScore"]["Negative"],
+        "sentiment_neutral_score": sentiment_response["SentimentScore"]["Neutral"],
+        "sentiment_mixed_score": sentiment_response["SentimentScore"]["Mixed"],
     }
     print(sentiment_record)
     return sentiment_record
