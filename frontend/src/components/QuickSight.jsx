@@ -93,7 +93,7 @@ function QuickSight() {
 
 	return (
 		<>
-			<main className='w-full px-4 flex flex-col gap-4 items-center justify-center text-white h-[150vh]'>
+			<main className='w-full px-4 flex flex-col gap-4 items-center justify-center text-black h-[150vh]'>
 				<p className='text-[2rem]'>
 					Welcome to the QuickSight dashboard
 				</p>
