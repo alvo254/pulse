@@ -9,8 +9,11 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@aws-sdk/client-athena": "^3.441.0",
+		"@aws-sdk/credential-provider-ini": "^3.441.0",
 		"@tanstack/react-query": "^5.0.0",
 		"@tanstack/react-query-devtools": "^5.0.0",
+		"@tanstack/react-table": "^8.10.7",
 		"amazon-cognito-identity-js": "^6.3.6",
 		"amazon-quicksight-embedding-sdk": "^2.4.0",
 		"aos": "^2.3.4",
