@@ -11,11 +11,11 @@ const customStyles = {
 		marginRight: '-50%',
 		transform: 'translate(-50%, -50%)',
 		// border: '1px solid black',
-		overflow: 'auto',
+		// overflow: 'auto',
 		overlay: { backgroundColor: 'green' },
 		// zIndex: 40,
 	},
-	overlay: { zIndex: 1000 },
+	overlay: { zIndex: 1000, backgroundColor: 'black' },
 };
 const CustomModal = ({ children, modalIsOpen, setIsOpen }) => {
 	// const [modalIsOpen, setIsOpen] = useState(false);
