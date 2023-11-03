@@ -1,4 +1,5 @@
 'use client';
+import Athena from '@/components/AWSservice/Athena';
 import QuickSight from '@/components/QuickSight';
 import { useAccountContext } from '@/state/AccountState';
 import Userpool from '@/state/Userpool';
