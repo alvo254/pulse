@@ -28,7 +28,18 @@ variable "tweets_glue_database_name" {
   type        = string
 }
 
+/*
 variable "tweets_transformed_table_name" {
   description = "The name of the AWS glue tweets transformed table"
+  type        = string
+}*/
+
+variable "kinesis_firehose_stream_name" {
+  description = "Name to be use on kinesis firehose stream"
+  type        = string
+}
+
+variable "cloudwatch_log_group_name" {
+  description = "The cloudwatch log group name"
   type        = string
 }

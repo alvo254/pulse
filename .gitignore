@@ -13,3 +13,5 @@ terraform.tfstate.backup
 .terraform.lock.hcl
 node_modules/
 .terraform.tfstate.lock.info
+.eslintrc.json
+session.tw_session

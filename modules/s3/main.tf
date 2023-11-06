@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "socialjar-react-bucket" {
 #     acl    = "public-read"
 # }
 
-resource "aws_s3_bucket_public_access_block" "toast-public_access" {
+resource "aws_s3_bucket_public_access_block" "socialjar-public_access" {
     bucket = aws_s3_bucket.socialjar-react-bucket.id
 
     block_public_acls       = false
@@ -25,7 +25,6 @@ module "template_files" {
     source = "hashicorp/dir/template"
     base_dir = "${path.module}/../../frontend/build"
 }
-
 
 
 resource "aws_s3_bucket_policy" "bucket_policy" {
@@ -75,19 +74,19 @@ resource "aws_s3_object" "bucket_files" {
 }
 
 resource "aws_s3_bucket" "socialjar-etl-bucket" {
-  bucket = "${var.project}-etl-bucket"
+  bucket = "${var.socialjar-bucket-etl}"
 
   tags = {
-    Name        = "${var.project}"
-    Environment = var.environment
+    Name        = "${var.socialjar-bucket-etl}"
+    Environment = "dev"
   }
 }
 
 resource "aws_s3_bucket" "socialjar-raw-bucket" {
-  bucket = "${var.project}-raw-bucket"
+  bucket = "${var.socialjar-bucket-raw}"
 
   tags = {
-    Name        = "${var.project}"
-    Environment = var.environment
+    Name        = "${var.socialjar-bucket-etl}"
+    Environment = "dev"
   }
 }

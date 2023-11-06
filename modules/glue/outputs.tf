@@ -14,6 +14,7 @@ output "entities_catalog_table_name" {
   value = aws_glue_catalog_table.entities_catalog_table.name
 }
 
+/*
 output "tweets_transformed_table_name" {
   value = aws_glue_catalog_table.tweets_transformed.name
-}
+}*/
