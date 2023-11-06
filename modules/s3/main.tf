@@ -27,7 +27,6 @@ module "template_files" {
 }
 
 
-
 resource "aws_s3_bucket_policy" "bucket_policy" {
     bucket = aws_s3_bucket.socialjar-react-bucket.id
     policy = jsonencode({
@@ -75,7 +74,7 @@ resource "aws_s3_object" "bucket_files" {
 }
 
 resource "aws_s3_bucket" "socialjar-etl-bucket" {
-  bucket = "${var.socialjar-bucket-etl}-etl-bucket"
+  bucket = "${var.socialjar-bucket-etl}"
 
   tags = {
     Name        = "${var.socialjar-bucket-etl}"
@@ -84,10 +83,10 @@ resource "aws_s3_bucket" "socialjar-etl-bucket" {
 }
 
 resource "aws_s3_bucket" "socialjar-raw-bucket" {
-  bucket = "${var.socialjar-bucket}-raw-bucket"
+  bucket = "${var.socialjar-bucket-raw}"
 
   tags = {
-    Name        = "${var.socialjar-bucket}"
+    Name        = "${var.socialjar-bucket-etl}"
     Environment = "dev"
   }
 }

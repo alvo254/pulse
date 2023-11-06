@@ -19,7 +19,7 @@ resource "aws_glue_catalog_table" "sentiments_catalog_table" {
   }
 
   storage_descriptor {
-    location      = "s3://${var.project}-etl-bucket/sentiments/"
+    location      = "s3://${var.socialjar_etl_bucket_name}/sentiments/"
     input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
 
@@ -89,7 +89,7 @@ resource "aws_glue_catalog_table" "entities_catalog_table" {
   }
 
   storage_descriptor {
-    location      = "s3://${var.project}-etl-bucket/entities/"
+    location      = "s3://${var.socialjar_etl_bucket_name}/entities/"
     input_format  = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat"
     output_format = "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat"
 
@@ -126,6 +126,7 @@ resource "aws_glue_catalog_table" "entities_catalog_table" {
   depends_on = [aws_glue_catalog_database.tweets_glue_database]
 }
 
+/*
 resource "aws_glue_catalog_table" "tweets_transformed" {
   name          = "tweets_transformed"
   database_name = aws_glue_catalog_database.tweets_glue_database.name
@@ -329,5 +330,5 @@ resource "aws_glue_catalog_table" "tweets_transformed" {
   }
 
   depends_on = [aws_glue_catalog_database.tweets_glue_database]
-}
+}*/
 

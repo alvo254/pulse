@@ -14,12 +14,12 @@ variable "bucket_name" {
   default = "socialjar-react-bucket"
 }
 
-variable "socialjar-bucket" {
+variable "socialjar-bucket-raw" {
   description = "This is for raw data collected from twitter"
-  default = "socialjar-c501-609806490186"
+  default = "socialjar-c501-609806490186-raw"
 }
 
 variable "socialjar-bucket-etl" {
   description = "This bucket is for ETL"
-  default = "socialjar-c501-609806490186"
+  default = "socialjar-c501-609806490186-etl"
 }

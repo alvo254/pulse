@@ -1,10 +1,13 @@
 import json
 import base64
 import boto3
+import os
 
 comprehend = boto3.client("comprehend")
 translate = boto3.client("translate")
 firehose = boto3.client("firehose")
+entities_firehose_stream = os.environ.get("ENTITIES_FIREHOSE_STREAM")
+sentiment_firehose_stream = os.environ.get("SENTIMENT_FIREHOSE_STREAM")
 
 
 def translate_text(language, text):
@@ -28,14 +31,14 @@ def detect_sentiment(client, payload, comprehend_text):
 
     sentiment_record = {
         "tweetid": payload.get("id"),
-        "authorusername": payload.get("author")["username"],
+        "author_username": payload.get("author")["username"],
         "text": comprehend_text,
-        "originaltext": payload.get("text"),
+        "original_text": payload.get("text"),
         "sentiment": sentiment_response["Sentiment"],
-        "sentimentpositivescore": sentiment_response["SentimentScore"]["Positive"],
-        "sentimentnegativescore": sentiment_response["SentimentScore"]["Negative"],
-        "sentimentneutralscore": sentiment_response["SentimentScore"]["Neutral"],
-        "sentimentmixedscore": sentiment_response["SentimentScore"]["Mixed"],
+        "sentiment_positive_score": sentiment_response["SentimentScore"]["Positive"],
+        "sentiment_negative_score": sentiment_response["SentimentScore"]["Negative"],
+        "sentiment_neutral_score": sentiment_response["SentimentScore"]["Neutral"],
+        "sentiment_mixed_score": sentiment_response["SentimentScore"]["Mixed"],
     }
     print(sentiment_record)
     return sentiment_record
@@ -55,7 +58,7 @@ def process_entity_response(client, payload, entities_response):
             }
 
             response = client.put_record(
-                DeliveryStreamName="EntitiesFirehoseStream",
+                DeliveryStreamName=entities_firehose_stream,
                 Record={"Data": json.dumps(entity_record) + "\n"},
             )
             seen_entities.append(id)
@@ -82,7 +85,7 @@ def lambda_handler(event, context):
         sentiment_record = detect_sentiment(comprehend, payload, comprehend_text)
 
         response = firehose.put_record(
-            DeliveryStreamName="SentimentFirehoseStream",
+            DeliveryStreamName=sentiment_firehose_stream,
             Record={"Data": json.dumps(sentiment_record) + "\n"},
         )
 
