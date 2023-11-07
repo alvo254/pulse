@@ -3,9 +3,9 @@ module "s3" {
   source = "./modules/s3"
 }
 
-module "vpc" {
-  source = "./modules/vpc"
-}
+# module "vpc" {
+#   source = "./modules/vpc"
+# }
 
 module "lambda" {
   source = "./modules/lambda"
@@ -28,10 +28,10 @@ module "cloudfront" {
 #   source = "./modules/waf"
 # }
 
-module "sg" {
-  source = "./modules/sg"
-  vpc_id = module.vpc.vpc_id
-}
+# module "sg" {
+#   source = "./modules/sg"
+#   vpc_id = module.vpc.vpc_id
+# }
 
 
 module "ec2" {
