@@ -17,14 +17,24 @@ export const links = [
 	{
 		title: 'Pages',
 		links: [
+			// {
+			// 	name: 'Tweets',
+			// 	address: 'tweets',
+			// 	icon: <FiTwitter />,
+			// },
+			// {
+			// 	name: 'Tweets Sentiment',
+			// 	address: 'sentiments',
+			// 	icon: <FiTwitter />,
+			// },
 			{
-				name: 'Tweets',
-				address: 'tweets',
+				name: 'Query Athena',
+				address: 'query-athena',
 				icon: <FiTwitter />,
 			},
 			{
-				name: 'Tweets Sentiment',
-				address: 'sentiments',
+				name: 'Query Executions',
+				address: 'query-execution',
 				icon: <FiTwitter />,
 			},
 		],

@@ -14,6 +14,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
 	return (
 		<html lang='en'>
+			<head>
+				{/* <script src='https://unpkg.com/monaco-editor@0.33.1/min/vs/loader.js'></script> */}
+			</head>
+
 			<body>
 				<AccountStateProvider>
 					<AppContextProvider>
