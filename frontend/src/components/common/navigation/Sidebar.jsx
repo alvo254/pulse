@@ -49,68 +49,72 @@ const Sidebar = () => {
 		'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-[#8C8D8E] font-[400] text-[16px] dark:text-gray-200 dark:hover:text-slate-600 hover:bg-light-gray m-2';
 
 	return (
-		<div className='h-screen   overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px]  bg-slate-800 shadow-sm'>
+		<div className='h-screen  flex flex-col justify-between overflow-y-auto md:overflow-x-hidden  md:hover:overflow-y-auto pb-[10px]  bg-slate-800 shadow-sm'>
 			{/* <LogoutModal /> */}
-			{activeMenu && (
-				<>
-					<div className='flex justify-between items-center'>
-						<Link
-							href='/'
-							onClick={handleCloseSidebar}
-							className='items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-100'
-						>
-							<div className=''>
-								<p className='text-[2rem] font-[300] leading-normal p-0 m-0'>
-									Social
-									<span className='font-[600]'>Jar</span>
-								</p>
-								<p className='text-[0.75rem] font-[500] text-slate-100 leading-normal uppercase p-0 mt-[-5px]'>
-									by Cil-C5
-								</p>
-							</div>
-						</Link>
-						<button
-							type='button'
-							onClick={() =>
-								setActiveMenu((prevState) => !prevState)
-							}
-							className='text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden'
-						>
-							<MdOutlineCancel />
-						</button>
-					</div>
-					<div className='mt-5 w-[240px]'>
-						{links.map((item) => (
-							<div key={item.title}>
-								{/* <p className="text-gray-400 m-3 mt-4 uppercase">{item.title}</p> */}
+			<div className=''>
+				{activeMenu && (
+					<>
+						<div className='flex justify-between items-center'>
+							<Link
+								href='/'
+								onClick={handleCloseSidebar}
+								className='items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-100'
+							>
+								<div className=''>
+									<p className='text-[2rem] font-[300] leading-normal p-0 m-0'>
+										Social
+										<span className='font-[600]'>Jar</span>
+									</p>
+									<p className='text-[0.75rem] font-[500] text-slate-100 leading-normal uppercase p-0 mt-[-5px]'>
+										by Cil-C5
+									</p>
+								</div>
+							</Link>
+							<button
+								type='button'
+								onClick={() =>
+									setActiveMenu((prevState) => !prevState)
+								}
+								className='text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden'
+							>
+								<MdOutlineCancel />
+							</button>
+						</div>
+						<div className='mt-5 w-[240px]'>
+							{links.map((item) => (
+								<div key={item.title}>
+									{/* <p className="text-gray-400 m-3 mt-4 uppercase">{item.title}</p> */}
 
-								{item.links.map((link) => {
-									return (
-										<Link
-											href={`/${link.address}`}
-											key={link.address}
-											onClick={handleCloseSidebar}
-											className={
-												pathname.includes(link.address)
-													? activeLink
-													: normalLink
-											}
-										>
-											{link.icon}
-											<span className='capitalize font-space font-[500] text-[14px] '>
-												{/* {link.name == '/' ? 'overview' : link.name} */}
-												{link.name}
-											</span>
-										</Link>
-									);
-								})}
-							</div>
-						))}
-					</div>
-				</>
-			)}
+									{item.links.map((link) => {
+										return (
+											<Link
+												href={`/${link.address}`}
+												key={link.address}
+												onClick={handleCloseSidebar}
+												className={
+													pathname.includes(
+														link.address
+													)
+														? activeLink
+														: normalLink
+												}
+											>
+												{link.icon}
+												<span className='capitalize font-space font-[500] text-[14px] '>
+													{/* {link.name == '/' ? 'overview' : link.name} */}
+													{link.name}
+												</span>
+											</Link>
+										);
+									})}
+								</div>
+							))}
+						</div>
+					</>
+				)}
+			</div>
 
-			<div className=' h-[68vh] flex items-end'>
+			<div className='  flex items-end'>
 				<button
 					onClick={() => {
 						handleShowModal();
