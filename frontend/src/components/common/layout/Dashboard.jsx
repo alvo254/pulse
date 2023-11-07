@@ -67,7 +67,7 @@ function DashboardLayout({ children }) {
 					</div>
 					<div className=' min-h-screen bg-[#0A2533'>
 						<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white pt-[50px] md:pt-0 '>
-							<div className=' pt-[30px] shadow pb-[30px]dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white  pb-[20px]'>
+							<div className=' pt-[30px] dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white  pb-[20px]'>
 								{/* <LogoutModal
 									modalOpen={openLogoutModal}
 									handleOpen={setOpenLogoutModal}
