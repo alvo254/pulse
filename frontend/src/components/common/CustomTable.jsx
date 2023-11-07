@@ -10,9 +10,10 @@ import {
 import { useState, useMemo } from 'react';
 import { FaFilter, FaWindowClose } from 'react-icons/fa';
 import { FiFilter, FiSearch } from 'react-icons/fi';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import CustomModal from './CustomModal';
+import ExportToExcel from './ExportToExcel';
+import XLSX from 'xlsx';
+import Modal from './Modal';
 function limitStringLength(inputString, maxLength) {
 	if (inputString.length <= maxLength) {
 		return inputString; // Return the original string if it's shorter than or equal to the maximum length.
@@ -34,19 +35,32 @@ const SearchComponent = ({ onFilter, filterText }) => (
 		/>
 	</div>
 );
+const customStyles = {
+	content: {
+		position: 'fixed',
+		top: '50%',
+		left: '50%',
+		right: 'auto',
+		bottom: 30,
+		backgroundColor: 'white',
+		transform: 'translate(-50%, -50%)',
+		// border: '1px solid black',
+		// overflow: 'auto',
+	},
+	overlay: { zIndex: 1000, backgroundColor: 'black' },
+};
 export default function CustomTable({
 	casesData,
 	columns,
-	redirectLink,
-	others,
 	title,
 	area,
+	handleGenerateChart,
 }) {
 	const [sorting, setSorting] = useState([]);
 	const [filtering, setFiltering] = useState('');
-	const [openModal, setOpenModal] = useState(false);
+	// const [openModal, setOpenModal] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [singleTweet, setSingleTweet] = useState([]);
-	const router = useRouter();
 
 	const data = useMemo(() => casesData, [casesData]);
 	const table = useReactTable({
@@ -65,13 +79,24 @@ export default function CustomTable({
 	});
 
 	const handleClick = (row) => {
-		// redirectLink && router.push(redirectLink + row.original._id);
-		console.log(row);
-		setSingleTweet(row);
-		setOpenModal(true);
+		setIsModalOpen(true);
+		const titles = data[0].Data.map((title) => title);
+		setSingleTweet(
+			titles.map((key, index) => ({
+				[key]: row[index],
+			}))
+		);
 	};
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+	console.log(data);
 	return (
-		<div className='dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white overflow-x-auto shadow'>
+		<div className='max-w-full dark:text-gray-200 dark:bg-main-dark-bg dark:hover:text-white overflow-x-auto shadow'>
 			<div
 				className={` ${
 					!area && 'pt-[90px] md:pt-[46px]'
@@ -85,51 +110,52 @@ export default function CustomTable({
 				value={filtering}
 				onChange={(e) => setFiltering(e.target.value)}
 			/> */}
-				{!area && (
-					<div className='min-w-full overflow-x-auto flex items-center gap-x-[1.12rem] bg-slate-800 pt-[0.3rem] px-[1.69rem] rounded-t-xl'>
-						{/* <div className='bg-white p-[0.5rem]'>
+				<div className='w-full flex justify-between items-center gap-x-[1.12rem] bg-slate-800 pt-[0.3rem] px-[1.69rem] rounded-t-xl'>
+					{/* <div className='bg-white p-[0.5rem]'>
 							<FiFilter className='w-[2.5rem] h-[1.7rem] rounded' />
 						</div> */}
-						<SearchComponent
-							onFilter={(e) => setFiltering(e.target.value)}
-							filterText={filtering}
-						/>
+					<SearchComponent
+						onFilter={(e) => setFiltering(e.target.value)}
+						filterText={filtering}
+					/>
+					<div className='flex items-center gap-x-4'>
+						<button
+							onClick={handleGenerateChart}
+							className='px-4 py-2 hover:bg-slate-500 hover:text-white rounded-lg bg-white text-slate-900'
+						>
+							Generate Chart
+						</button>
+						<ExportToExcel data={data} />
 					</div>
-				)}
+				</div>
 				<table className='min-w-full overflow-x-auto'>
 					<thead className={'bg-slate-800 text-white py-12'}>
-						{table.getHeaderGroups().map((headerGroup) => (
-							<tr key={headerGroup.id}>
-								{headerGroup.headers.map((header) => {
-									return (
-										<th
-											key={header.id}
-											className='p-[1rem] text-left text-xs font-medium uppercase tracking-wider'
-											onClick={header.column.getToggleSortingHandler()}
-										>
-											{header.isPlaceholder ? null : (
-												<div className='text-white'>
-													{flexRender(
-														header.column.columnDef
-															.header,
-														header.getContext()
-													)}
-													{
-														{
-															asc: '🔼',
-															desc: '🔽',
-														}[
-															header.column.getIsSorted() ??
-																null
-														]
-													}
-												</div>
-											)}
-										</th>
-									);
-								})}
-							</tr>
-						))}
+						{/* {table.getHeaderGroups().map((headerGroup) => ( */}
+						{/* {table.getRowModel()?.rows.map((header, i) => { */}
+						{table
+							.getRowModel()
+							.rows.slice(0, 1)
+							.map((row, index) => {
+								// console.log(row);
+								return (
+									<tr key={index}>
+										{row.original.Data.slice(
+											0,
+											row.original.Data.length > 5
+												? 5
+												: row.original.Data.length
+										).map((header, i) => (
+											<th
+												key={i}
+												className='p-[1rem] text-left text-xs font-medium uppercase tracking-wider'
+												// onClick={header.column.getToggleSortingHandler()}
+											>
+												{header}
+											</th>
+										))}
+									</tr>
+								);
+							})}
 					</thead>
 
 					<tbody>
@@ -137,8 +163,6 @@ export default function CustomTable({
 							.getRowModel()
 							.rows.slice(1)
 							.map((row, index) => {
-								// console.log(row);
-								// console.log(row.getVisibleCells());
 								return (
 									<tr
 										key={row.id}
@@ -151,39 +175,19 @@ export default function CustomTable({
 												: 'bg-white hover:bg-gray-200 cursor-pointer text-black'
 										}
 									>
-										<td
-											// key={cell.id}
-											className='p-[1rem] whitespace-wrap '
-										>
-											{limitStringLength(
-												row.original.Data[3],
-												55
-											)}
-										</td>
-										<td
-											// key={cell.id}
-											className='p-[1rem] whitespace-nowrap '
-										>
-											{row.original.Data[14]}
-										</td>
-										<td
-											// key={cell.id}
-											className='p-[1rem] whitespace-nowrap '
-										>
-											{row.original.Data[10]}
-										</td>
-										<td
-											// key={cell.id}
-											className='p-[1rem] whitespace-nowrap '
-										>
-											{row.original.Data[12]}
-										</td>
-										<td
-											// key={cell.id}
-											className='p-[1rem] whitespace-nowrap '
-										>
-											{row.original.Data[1]}
-										</td>
+										{row.original.Data.slice(
+											0,
+											row.original.Data.length > 5
+												? 5
+												: row.original.Data.length
+										).map((item, i) => (
+											<td
+												// key={cell.id}
+												className='p-[1rem] whitespace-wrap '
+											>
+												{limitStringLength(item, 55)}
+											</td>
+										))}
 									</tr>
 								);
 							})}
@@ -278,83 +282,33 @@ export default function CustomTable({
 					)}
 				</div>
 			</div>
-			<div className='w-[80vw] mx-auto min-h-screen overflow-y-auto'>
-				<CustomModal modalIsOpen={openModal} setIsOpen={setOpenModal}>
-					<div className='px-[20px] w-full md:w-[70vw]'>
-						<div className='flex justify-between items-center'>
+			{isModalOpen && (
+				<>
+					<Modal isOpen={isModalOpen} onClose={closeModal}>
+						<div className='flex justify-between items-center mb-3'>
 							<p className='font-[600] text-[1.25rem] leading-[2.375rem] text-[#2E3646] text-center'>
-								Tweet Details
+								Selected Row's Details
 							</p>
 							<FaWindowClose
-								className='cursor-pointer'
+								className='cursor-pointer text-black text-2xl'
 								onClick={() =>
-									setOpenModal((preveState) => !preveState)
+									setIsModalOpen((preveState) => !preveState)
 								}
 							/>
 						</div>
-						<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-							<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-								Tweet:
-							</p>
-							<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-								{singleTweet[3]}
-							</p>
-						</div>
-						<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-							<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-								Date Tweeted:
-							</p>
-							<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-								{singleTweet[1]}
-							</p>
-						</div>
-						<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-							<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-								Tweet Source:
-							</p>
-							<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-								{singleTweet[14]}
-							</p>
-						</div>
-						<div className='flex gap-6'>
-							<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-								<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-									No. of Views:
+						{singleTweet.map((item, i) => (
+							<div key={i} className='grid grid-cols-10 mb-3'>
+								<p className='col-span-full md:col-span-3 font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center md:text-left'>
+									{Object.keys(item)}:{' '}
 								</p>
-								<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-									{singleTweet[10]}
+								<p className='col-span-full md:col-span-7 font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center md:text-left'>
+									{Object.values(item)}
 								</p>
 							</div>
-							<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-								<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-									Time retweeted:
-								</p>
-								<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-									{singleTweet[2]}
-								</p>
-							</div>
-						</div>
-						<div className='flex gap-6'>
-							<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-								<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-									No. of Bookmarks:
-								</p>
-								<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-									{singleTweet[9]}
-								</p>
-							</div>
-							<div className='flex gap-x-4 mb-3 flex-col md:flex-row'>
-								<p className='md:my-[1rem] font-[600] text-[0.875rem] leading-[1.5rem] text-slate-900 text-center'>
-									No. of Likes:
-								</p>
-								<p className='md:my-[1rem] font-[400] text-[0.875rem] leading-[1.5rem] text-[#5F6D7E] text-center'>
-									{singleTweet[2]}
-								</p>
-							</div>
-						</div>
-					</div>
-				</CustomModal>
-			</div>
+						))}
+					</Modal>
+				</>
+			)}
 		</div>
 	);
 }
