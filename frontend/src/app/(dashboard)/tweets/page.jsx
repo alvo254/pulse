@@ -1,10 +1,10 @@
-import Athena from '@/components/AWSservice/Athena';
+import TweetsInfo from '@/components/TweetsInfo';
 import React from 'react';
 
 const Tweets = () => {
 	return (
 		<div>
-			<Athena />
+			<TweetsInfo />
 		</div>
 	);
 };
