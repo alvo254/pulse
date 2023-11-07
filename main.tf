@@ -17,18 +17,16 @@ module "lambda" {
   sentiment_kinesis_firehose_stream_name = module.kinesis.sentiment_kinesis_firehose_stream_name
 }
 
-
 module "cloudfront" {
   source                      = "./modules/cloudfront"
   s3_bucket                   = module.s3.s3_bucket
   bucket_regional_domain_name = module.s3.bucket_regional_domain_name
 }
 
+
 # module "waf" {
 #   source = "./modules/waf"
 # }
-
-
 
 module "sg" {
   source = "./modules/sg"

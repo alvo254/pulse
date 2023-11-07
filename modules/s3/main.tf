@@ -8,13 +8,12 @@ resource "aws_s3_bucket" "socialjar-react-bucket" {
 }
 
 # resource "aws_s3_bucket_acl" "bucket_acl" {
-#     bucket = aws_s3_bucket.toast-react-bucket.id
+#     bucket = aws_s3_bucket.socialjar-react-bucket.id
 #     acl    = "public-read"
 # }
 
 resource "aws_s3_bucket_public_access_block" "socialjar-public_access" {
     bucket = aws_s3_bucket.socialjar-react-bucket.id
-
     block_public_acls       = false
     block_public_policy     = false
     ignore_public_acls      = false
@@ -23,7 +22,7 @@ resource "aws_s3_bucket_public_access_block" "socialjar-public_access" {
 
 module "template_files" {
     source = "hashicorp/dir/template"
-    base_dir = "${path.module}/../../frontend/build"
+    base_dir = "${path.module}/../../frontend/out"
 }
 
 
@@ -36,7 +35,7 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
                 "Sid": "Statement1",
                 "Effect": "Allow",
                 "Principal": "*",
-                "Action": "s3:GetObject",
+                "Action": "s3:*",
                 "Resource": "arn:aws:s3:::${var.bucket_name}/*"
             }
         ]
