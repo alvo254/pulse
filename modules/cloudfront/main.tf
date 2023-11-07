@@ -31,7 +31,42 @@ viewer_certificate {
         forward = "none"
       }
     }
+ # Define additional cache behaviors for specific path patterns
+  # cache_behavior {
+  #   path_pattern          = "/images/*"
+  #   allowed_methods      = ["GET", "HEAD"]
+  #   cached_methods       = ["GET", "HEAD"]
+  #   target_origin_id     = "distribution"
+  #   min_ttl              = 0
+  #   default_ttl          = 3600
+  #   max_ttl              = 86400
+  #   viewer_protocol_policy = "redirect-to-https"
 
+  #   forwarded_values {
+  #     query_string = false
+  #     cookies {
+  #       forward = "none"
+  #     }
+  #   }
+  # }
+
+  # cache_behavior {
+  #   path_pattern          = "/api/*"
+  #   allowed_methods      = ["GET", "HEAD", "OPTIONS"]
+  #   cached_methods       = ["GET", "HEAD", "OPTIONS"]
+  #   target_origin_id     = "distribution"
+  #   min_ttl              = 0
+  #   default_ttl          = 0
+  #   max_ttl              = 0
+  #   viewer_protocol_policy = "https-only"
+
+  #   forwarded_values {
+  #     query_string = true
+  #     cookies {
+  #       forward = "none"
+  #     }
+  #   }
+  # }
     viewer_protocol_policy = "allow-all"
     min_ttl                = 0
     default_ttl            = 3600

@@ -1,50 +1,6 @@
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import { AiFillHome } from 'react-icons/ai';
-export const studentLinks = [
-	{
-		title: 'Dashboard',
-		links: [
-			{
-				name: 'overview',
-				icon: <AiFillHome />,
-			},
-		],
-	},
-
-	{
-		title: 'Pages',
-		links: [
-			{
-				name: 'task',
-				icon: <HiOutlineUserGroup />,
-			},
-			{
-				name: 'instructors',
-				icon: <HiOutlineUserGroup />,
-			},
-			{
-				name: 'modules',
-				icon: <HiOutlineUserGroup />,
-			},
-			{
-				name: 'schedule',
-				icon: <HiOutlineUserGroup />,
-			},
-			{
-				name: 'payments',
-				icon: <HiOutlineUserGroup />,
-			},
-			{
-				name: 'technical-support',
-				icon: <HiOutlineUserGroup />,
-			},
-			{
-				name: 'fAQs-and-tutorials',
-				icon: <HiOutlineUserGroup />,
-			},
-		],
-	},
-];
+import { FiTwitter } from 'react-icons/fi';
 
 export const links = [
 	{
@@ -61,10 +17,25 @@ export const links = [
 	{
 		title: 'Pages',
 		links: [
+			// {
+			// 	name: 'Tweets',
+			// 	address: 'tweets',
+			// 	icon: <FiTwitter />,
+			// },
+			// {
+			// 	name: 'Tweets Sentiment',
+			// 	address: 'sentiments',
+			// 	icon: <FiTwitter />,
+			// },
 			{
-				name: 'manage social medias',
-				address: 'managestudents',
-				icon: <HiOutlineUserGroup />,
+				name: 'Query Athena',
+				address: 'query-athena',
+				icon: <FiTwitter />,
+			},
+			{
+				name: 'Query Executions',
+				address: 'query-execution',
+				icon: <FiTwitter />,
 			},
 		],
 	},

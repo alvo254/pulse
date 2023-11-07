@@ -1,5 +1,7 @@
 'use client';
+import Athena from '@/components/AWSservice/Athena';
 import QuickSight from '@/components/QuickSight';
+import CustomChart from '@/components/common/CustomChart';
 import { useAccountContext } from '@/state/AccountState';
 import Userpool from '@/state/Userpool';
 import { useRouter } from 'next/navigation';
@@ -37,6 +39,16 @@ const Dashboard = () => {
 				</p>
 			</div> */}
 			<QuickSight />
+			<div className='px-[20px] mb-[20px] overflow-auto'>
+				{/* <div className='w-full'> */}
+				{/* <CityChart /> */}
+				{/* <CustomChart
+					infoType='state'
+					chartType='bar'
+					chartLabel='State Population'
+				/> */}
+				{/* </div> */}
+			</div>
 		</>
 	);
 };

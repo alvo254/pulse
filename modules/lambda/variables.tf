@@ -8,15 +8,15 @@ variable "socialjar_raw_bucket" {
 #   type = string
 # }
 
-# variable "subnet_id" {
-#   description = "This is the subnet id"
-#   type        = string
-# }
+variable "subnet_id" {
+  description = "This is the subnet id"
+  type        = string
+}
 
-# variable "security_group" {
-#   description = "Security group ID"
-#   type        = string
-# }
+variable "security_group" {
+  description = "Security group ID"
+  type        = string
+}
 
 variable "tweets_analyze_lambda_function_name" {
   default = "tweets_sentiment_analyze"

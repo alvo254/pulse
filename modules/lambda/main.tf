@@ -33,12 +33,12 @@ resource "null_resource" "lambda_layer" {
   provisioner "local-exec" {
     command = <<EOT
       set -e
-      sudo apt-get update
+      sudo apt-get update -y
       sudo apt install python3 python3-pip zip -y
       sudo rm -rf python
       mkdir python
-      sudo pip3 install -r ${local.requirements_path} -t python/
-      sudo zip -r ${local.layer_zip_path} python/
+      pip3 install -r ${local.requirements_path} -t python/
+      zip -r ${local.layer_zip_path} python/
     EOT
   }
 }
@@ -64,11 +64,10 @@ resource "aws_lambda_function" "lambda_function" {
 
   layers = [aws_lambda_layer_version.tweety_python_layer.arn]
 
-  # vpc_config {
-  #   # vpc_id = var.vpc_id
-  #   subnet_ids         = [var.subnet_id]
-  #   security_group_ids = [var.security_group]
-  # }
+  vpc_config {
+    subnet_ids         = [var.subnet_id]
+    security_group_ids = [var.security_group]
+  }
 
   environment {
     variables = {
@@ -192,10 +191,10 @@ resource "aws_lambda_function" "tweets_lambda_processor" {
   source_code_hash = filebase64sha256(data.archive_file.tweets_process_lambda.output_path)
   timeout          = 900
 
-  # vpc_config {
-  #   subnet_ids         = [var.subnet_id]
-  #   security_group_ids = [var.security_group]
-  # }
+  vpc_config {
+    subnet_ids         = [var.subnet_id]
+    security_group_ids = [var.security_group]
+  }
   environment {
     variables = {
       ENTITIES_FIREHOSE_STREAM  = var.entities_kinesis_firehose_stream_name
