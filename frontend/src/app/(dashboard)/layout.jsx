@@ -8,9 +8,9 @@ export default function RootLayout({ children }) {
 	return (
 		<>
 			{' '}
-			<AppContextProvider>
-				<DashboardLayout>{children}</DashboardLayout>
-			</AppContextProvider>
+			{/* <AppContextProvider> */}
+			<DashboardLayout>{children}</DashboardLayout>
+			{/* </AppContextProvider> */}
 		</>
 	);
 }

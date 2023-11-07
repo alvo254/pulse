@@ -11,6 +11,7 @@ export const AppContextProvider = ({ children }) => {
 	const [screenSize, setScreenSize] = useState(undefined);
 	const [darkToggle, setDarkToggle] = useState(false);
 	const [openLogoutModal, setOpenLogoutModal] = useState(false);
+	const [fetchedTweets, setFetchedTweets] = useState([]);
 	let login = false;
 
 	const handleClick = (clicked) => {
@@ -34,6 +35,8 @@ export const AppContextProvider = ({ children }) => {
 				scrollContainerRef,
 				openLogoutModal,
 				setOpenLogoutModal,
+				fetchedTweets,
+				setFetchedTweets,
 			}}
 		>
 			{children}

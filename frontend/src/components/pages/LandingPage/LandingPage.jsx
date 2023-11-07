@@ -7,8 +7,8 @@ const LandingPage = () => {
 	return (
 		<div>
 			<Header />
-			<Integration />
-			<Audience />
+			{/* <Integration />
+			<Audience /> */}
 		</div>
 	);
 };

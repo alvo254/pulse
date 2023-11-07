@@ -8,16 +8,21 @@ const customStyles = {
 		left: '50%',
 		right: 'auto',
 		bottom: 'auto',
+		position: 'fixed',
+		// top: 0,
+		// left: 0,
+		// right: 0,
+		// bottom: 0,
 		marginRight: '-50%',
 		transform: 'translate(-50%, -50%)',
 		// border: '1px solid black',
-		overflow: 'auto',
+		// overflow: 'auto',
 		overlay: { backgroundColor: 'green' },
 		// zIndex: 40,
 	},
-	overlay: { zIndex: 1000 },
+	overlay: { zIndex: 1000, backgroundColor: 'black' },
 };
-const CustomModal = ({ children, modalIsOpen, setIsOpen }) => {
+const CustomModal = ({ children, modalIsOpen, setIsOpen, style }) => {
 	// const [modalIsOpen, setIsOpen] = useState(false);
 
 	return (
@@ -26,7 +31,7 @@ const CustomModal = ({ children, modalIsOpen, setIsOpen }) => {
 			onRequestClose={() => {
 				setIsOpen(false);
 			}}
-			style={customStyles}
+			style={style ? style : customStyles}
 			ariaHideApp={false}
 		>
 			{children}
