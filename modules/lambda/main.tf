@@ -103,27 +103,6 @@ resource "aws_cloudwatch_event_target" "event_target" {
 }
 
 
-# lambda to transform, analyze tweets streamed through firehose
-# data "aws_iam_policy_document" "process_tweets_policy" {
-#   statement {
-#     effect = "Allow"
-
-#     actions = [
-
-#       "logs:CreateLogGroup",
-#       "logs:CreateLogStream",
-#       "logs:PutLogEvents",
-#       "comprehend:DetectEntities",
-#       "comprehend:DetectSentiment",
-#       "comprehend:BatchDetectEntities",
-#       "comprehend:BatchDetectSentiment",
-#       "firehose:PutRecord",
-#       "translate:TranslateText",
-#     ]
-
-#     resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
-#   }
-# }
 
 data "archive_file" "tweets_process_lambda" {
   type        = "zip"
@@ -132,22 +111,6 @@ data "archive_file" "tweets_process_lambda" {
 }
 
 
-# resource "aws_iam_role" "tweets_process_lambda_role" {
-#   name = "tweets_anaylyze_transform_lambda_role"
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = "sts:AssumeRole"
-#         Effect = "Allow"
-#         Sid    = ""
-#         Principal = {
-#           Service = "lambda.amazonaws.com"
-#         }
-#       },
-#     ]
-#   })
-# }
 
 resource "aws_iam_role" "tweety_role" {
   name = "lambda-tweety-s3-role"
@@ -158,32 +121,6 @@ resource "aws_iam_role_policy_attachment" "tweety_policy_attachment" {
   policy_arn = aws_iam_policy.lambda_policy.arn
   role       = aws_iam_role.tweety_role.name
 }
-
-# resource "aws_iam_role_policy" "tweets_process_policy" {
-#   name = "tweetsLambdaProcessPolicy"
-#   role = aws_iam_role.tweety_role.id
-
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = [
-#           "logs:CreateLogGroup",
-#           "logs:CreateLogStream",
-#           "logs:PutLogEvents",
-#           "comprehend:DetectEntities",
-#           "comprehend:DetectSentiment",
-#           "comprehend:BatchDetectEntities",
-#           "comprehend:BatchDetectSentiment",
-#           "firehose:PutRecord",
-#           "translate:TranslateText",
-#         ]
-#         Effect   = "Allow"
-#         Resource = "*"
-#       },
-#     ]
-#   })
-# }
 
 
 
