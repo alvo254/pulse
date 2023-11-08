@@ -1,66 +1,43 @@
-resource "aws_wafv2_web_acl" "socialjar" {
-  name        = "socialjar-rule-example"
-  description = "socialjar managed rule."
-  scope       = "REGIONAL"
+resource "aws_waf_ipset" "ipset" {
+  name = "tfIPSet"
+
+  ip_set_descriptors {
+    type  = "IPV4"
+    value = "192.0.7.0/24"
+  }
+}
+
+resource "aws_waf_rule" "wafrule" {
+  depends_on  = [aws_waf_ipset.ipset]
+  name        = "tfWAFRule"
+  metric_name = "tfWAFRule"
+
+  predicates {
+    data_id = aws_waf_ipset.ipset.id
+    negated = false
+    type    = "IPMatch"
+  }
+}
+
+resource "aws_waf_web_acl" "waf_acl" {
+  depends_on = [
+    aws_waf_ipset.ipset,
+    aws_waf_rule.wafrule,
+  ]
+  name        = "tfWebACL"
+  metric_name = "tfWebACL"
 
   default_action {
-    allow {}
+    type = "ALLOW"
   }
 
-  rule {
-    name     = "rule-1"
+  rules {
+    action {
+      type = "BLOCK"
+    }
+
     priority = 1
-
-    override_action {
-      count {}
-    }
-
-    statement {
-      managed_rule_group_statement {
-        name        = "AWSManagedRulesCommonRuleSet"
-        vendor_name = "AWS"
-
-        rule_action_override {
-          action_to_use {
-            count {}
-          }
-
-          name = "SizeRestrictions_QUERYSTRING"
-        }
-
-        rule_action_override {
-          action_to_use {
-            count {}
-          }
-
-          name = "NoUserAgent_HEADER"
-        }
-
-        scope_down_statement {
-          geo_match_statement {
-            country_codes = ["US", "NL"]
-          }
-        }
-      }
-    }
-
-    # token_domains = ["pulse-hub.com"]
-
-    visibility_config {
-      cloudwatch_metrics_enabled = false
-      metric_name                = "friendly-rule-metric-name"
-      sampled_requests_enabled   = false
-    }
-  }
-
-  tags = {
-    Tag1 = "Value1"
-    Tag2 = "Value2"
-  }
-
-  visibility_config {
-    cloudwatch_metrics_enabled = false
-    metric_name                = "friendly-metric-name"
-    sampled_requests_enabled   = false
+    rule_id  = aws_waf_rule.wafrule.id
+    type     = "REGULAR"
   }
 }

@@ -1,14 +1,11 @@
 resource "aws_iam_role" "lambda_role" {
   name = "lambda-data-pull-s3-role"
-  # file("${path.module}/staff.sh")
   assume_role_policy = file("${path.module}/trust-policy.json")
 }
 
 data "archive_file" "lambda" {
   type       = "zip"
   source_dir = "${path.module}/func/"
-  # source_dir  = "../../backend/lambda/"
-  # output_path = "lambdaDeploymentPackage.zip"
   output_path = "${path.module}/func/lambda.zip"
 }
 
@@ -19,9 +16,9 @@ data "archive_file" "python" {
 }
 
 locals {
-  layer_zip_path = "python.zip"
-  # requirements_path = "${path.module}/python/requirements.txt"
-  requirements_path = "${path.root}/modules/lambda/python/requirements.txt"
+  layer_zip_path = "${path.module}/python/python.zip"
+  requirements_path = "${path.module}/python/requirements.txt"
+  # requirements_path = "${path.root}/modules/lambda/python/requirements.txt"
   layer_name = "tweety-python-layer"
 }
 
@@ -32,13 +29,13 @@ resource "null_resource" "lambda_layer" {
   # the command to install python and dependencies to the machine and zips
   provisioner "local-exec" {
     command = <<EOT
-      set -e
+      sudo set -e
       sudo apt-get update -y
       sudo apt install python3 python3-pip zip -y
       sudo rm -rf python
       mkdir python
       pip3 install -r ${local.requirements_path} -t python/
-      zip -r ${local.layer_zip_path} python/
+      zip -r ${data.archive_file.python.output_path} python/
     EOT
   }
 }
@@ -48,13 +45,14 @@ resource "aws_iam_policy" "lambda_policy" {
   policy = file("${path.module}/policy.json")
 }
 
+# Attach the IAM policy to the IAM role associated with the Lambda function
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   policy_arn = aws_iam_policy.lambda_policy.arn
   role       = aws_iam_role.lambda_role.name
 }
 
 resource "aws_lambda_function" "lambda_function" {
-  function_name    = "tweetSocialJarPull"
+  function_name    = "alvotweetSocialJarPull"
   role             = aws_iam_role.lambda_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.11"
@@ -84,12 +82,6 @@ resource "aws_lambda_layer_version" "tweety_python_layer" {
   depends_on = [null_resource.lambda_layer]
 }
 
-//Add policy
-resource "aws_s3_bucket" "bucket" {
-  bucket = var.socialjar_raw_bucket
-
-}
-
 
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name                = "tweet-pull-socialjar-scheduled-rule"
@@ -112,26 +104,26 @@ resource "aws_cloudwatch_event_target" "event_target" {
 
 
 # lambda to transform, analyze tweets streamed through firehose
-data "aws_iam_policy_document" "process_tweets_policy" {
-  statement {
-    effect = "Allow"
+# data "aws_iam_policy_document" "process_tweets_policy" {
+#   statement {
+#     effect = "Allow"
 
-    actions = [
+#     actions = [
 
-      "logs:CreateLogGroup",
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "comprehend:DetectEntities",
-      "comprehend:DetectSentiment",
-      "comprehend:BatchDetectEntities",
-      "comprehend:BatchDetectSentiment",
-      "firehose:PutRecord",
-      "translate:TranslateText",
-    ]
+#       "logs:CreateLogGroup",
+#       "logs:CreateLogStream",
+#       "logs:PutLogEvents",
+#       "comprehend:DetectEntities",
+#       "comprehend:DetectSentiment",
+#       "comprehend:BatchDetectEntities",
+#       "comprehend:BatchDetectSentiment",
+#       "firehose:PutRecord",
+#       "translate:TranslateText",
+#     ]
 
-    resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
-  }
-}
+#     resources = ["arn:aws:logs:us-east-1:609806490186:*", "*", "*", "*"]
+#   }
+# }
 
 data "archive_file" "tweets_process_lambda" {
   type        = "zip"
@@ -139,52 +131,65 @@ data "archive_file" "tweets_process_lambda" {
   output_path = "${path.module}/tweet_transform/lambda.zip"
 }
 
-resource "aws_iam_role" "tweets_process_lambda_role" {
-  name = "tweets_anaylyze_transform_lambda_role"
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Sid    = ""
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      },
-    ]
-  })
+
+# resource "aws_iam_role" "tweets_process_lambda_role" {
+#   name = "tweets_anaylyze_transform_lambda_role"
+#   assume_role_policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Action = "sts:AssumeRole"
+#         Effect = "Allow"
+#         Sid    = ""
+#         Principal = {
+#           Service = "lambda.amazonaws.com"
+#         }
+#       },
+#     ]
+#   })
+# }
+
+resource "aws_iam_role" "tweety_role" {
+  name = "lambda-tweety-s3-role"
+  assume_role_policy = file("${path.module}/trust-policy.json")
 }
 
-resource "aws_iam_role_policy" "tweets_process_policy" {
-  name = "tweetsLambdaProcessPolicy"
-  role = aws_iam_role.tweets_process_lambda_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "comprehend:DetectEntities",
-          "comprehend:DetectSentiment",
-          "comprehend:BatchDetectEntities",
-          "comprehend:BatchDetectSentiment",
-          "firehose:PutRecord",
-          "translate:TranslateText",
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-    ]
-  })
+resource "aws_iam_role_policy_attachment" "tweety_policy_attachment" {
+  policy_arn = aws_iam_policy.lambda_policy.arn
+  role       = aws_iam_role.tweety_role.name
 }
+
+# resource "aws_iam_role_policy" "tweets_process_policy" {
+#   name = "tweetsLambdaProcessPolicy"
+#   role = aws_iam_role.tweety_role.id
+
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Action = [
+#           "logs:CreateLogGroup",
+#           "logs:CreateLogStream",
+#           "logs:PutLogEvents",
+#           "comprehend:DetectEntities",
+#           "comprehend:DetectSentiment",
+#           "comprehend:BatchDetectEntities",
+#           "comprehend:BatchDetectSentiment",
+#           "firehose:PutRecord",
+#           "translate:TranslateText",
+#         ]
+#         Effect   = "Allow"
+#         Resource = "*"
+#       },
+#     ]
+#   })
+# }
+
+
 
 resource "aws_lambda_function" "tweets_lambda_processor" {
   function_name    = "tweetProcessor"
-  role             = aws_iam_role.tweets_process_lambda_role.arn
+  role             = aws_iam_role.tweety_role.arn
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.11"
   filename         = "${path.module}/tweet_transform/lambda.zip"

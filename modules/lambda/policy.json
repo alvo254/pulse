@@ -16,7 +16,7 @@
                 "s3:GetObject",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::socialjar-c501-609806490186-raw-bucket/*"
+            "Resource": "arn:aws:s3:::socialjar-raw-bucket/*"
         },
         {
             "Effect": "Allow",
@@ -26,6 +26,21 @@
               "ec2:DeleteNetworkInterface",
               "ec2:DescribeInstances",
               "ec2:AttachNetworkInterface"
+            ],
+            "Resource": "*"
+          },
+          {
+            "Effect": "Allow",
+            "Action": [
+              "logs:CreateLogGroup",
+              "logs:CreateLogStream",
+              "logs:PutLogEvents",
+              "comprehend:DetectEntities",
+              "comprehend:DetectSentiment",
+              "comprehend:BatchDetectEntities",
+              "comprehend:BatchDetectSentiment",
+              "firehose:PutRecord",
+              "translate:TranslateText"
             ],
             "Resource": "*"
           }
