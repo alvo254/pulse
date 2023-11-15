@@ -61,6 +61,9 @@ resource "aws_lambda_function" "lambda_function" {
   timeout          = 600
 
   layers = [aws_lambda_layer_version.tweety_python_layer.arn]
+  lifecycle {
+    create_before_destroy = true
+  }
 
   vpc_config {
     subnet_ids         = [var.subnet_id]
@@ -132,6 +135,9 @@ resource "aws_lambda_function" "tweets_lambda_processor" {
   filename         = "${path.module}/tweet_transform/lambda.zip"
   source_code_hash = filebase64sha256(data.archive_file.tweets_process_lambda.output_path)
   timeout          = 900
+  lifecycle {
+    create_before_destroy = true
+  }
 
   vpc_config {
     subnet_ids         = [var.subnet_id]
@@ -144,3 +150,4 @@ resource "aws_lambda_function" "tweets_lambda_processor" {
     }
   }
 }
+
