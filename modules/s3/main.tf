@@ -5,6 +5,9 @@ resource "aws_s3_bucket" "socialjar-react-bucket" {
     Name = "${var.project}-${var.environment}-bucket"
 
   }
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_s3_bucket_versioning" "versioning_example" {

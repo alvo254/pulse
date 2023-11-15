@@ -171,7 +171,7 @@ Resources:
     Properties: 
       ConfigRuleName: ServerSideEncryptionEnabled
       Description: "Checks that your Amazon S3 bucket either has S3 default encryption enabled or that the S3 bucket policy explicitly denies put-object requests without server side encryption."
-      Scope: 
+      Scope:  
         ComplianceResourceTypes: 
         - "AWS::S3::Bucket"
       Source: 
@@ -264,7 +264,7 @@ resource "aws_config_conformance_pack" "lambda_conformance_pack" {
 
 
 resource "aws_config_conformance_pack" "nist" {
-  name = ""
+  name = "nist"
   depends_on = [aws_config_configuration_recorder.socialjar]
 
   template_body = <<EOT

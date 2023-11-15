@@ -12,5 +12,5 @@ output "entities_catalog_table_name" {
 
 
 # output "tweet" {
-#   value = module.vpc.public_subnet1.id
+#   value = module.vpc.public_subnet1.arn
 # }

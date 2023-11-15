@@ -60,7 +60,7 @@ resource "aws_iam_policy" "function_logging_policy" {
 }
 
 //Attach the logging policy to the function role
-resource "aws_iam_role_policy_attachment" "function_logging_policy_attachment" {
-  role = aws_iam_role.function_role.id
-  policy_arn = aws_iam_policy.function_logging_policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "function_logging_policy_attachment" {
+#   role = aws_iam_role.function_role.id
+#   policy_arn = aws_iam_policy.function_logging_policy.arn
+# }
