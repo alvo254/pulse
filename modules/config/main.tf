@@ -264,7 +264,7 @@ resource "aws_config_conformance_pack" "lambda_conformance_pack" {
 
 
 resource "aws_config_conformance_pack" "nist" {
-  name = "nist"
+  name = "nist-pack"
   depends_on = [aws_config_configuration_recorder.socialjar]
 
   template_body = <<EOT
